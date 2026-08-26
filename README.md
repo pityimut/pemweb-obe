@@ -5,7 +5,7 @@
 * **Prodi / Fakultas:** Teknik Komputer
 
 ## Deskripsi Singkat Proyek
-Proyek ini merupakan proyek awal atau penyiapan lingkungan kerja (*initial project setup*) untuk praktikum Pemrograman Web berbasis OBE (Outcome-Based Education). Berisi halaman web sederhana untuk menguji konfigurasi server lokal.
+gunakan satu kasus yang disepakati dan dikembangkan secara incremental. Kasus diutamakan terkait wilayah pesisir/perbatasan, layanan publik, IoT/dashboard, UMKM, industri, atau technopreneurship sesuai RPS. 
 
 ## Teknologi yang Digunakan
 * **HTML5 / PHP**
