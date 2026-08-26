@@ -1,1 +1,8 @@
-"# AI Usage Log" 
+# AI Usage Log
+
+| Tanggal | Tujuan Penggunaan AI | Prompt Ringkas | Hasil | Verifikasi | Keputusan Mahasiswa |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| 2026-08-26 | Membantu panduan langkah-langkah instalasi lingkungan kerja dan struktur direktori proyek praktikum web. | Cara membuat folder proyek, membuka terminal, membuat file HTML minimum, dan mengakses tab Network browser. | Menghasilkan panduan perintah terminal (mkdir, cd, code .) dan kode struktur dasar HTML. | Diuji langsung di browser melalui server lokal Laragon dan diperiksa melalui Developer Tools browser. | Diterima dan diterapkan sepenuhnya pada sistem lokal. |
+| 2026-08-26 | Memandu inisialisasi Git, pembuatan repository GitHub, dan perintah penghubung remote. | Perintah git init, git status, git remote add, git branch -M main, dan git push. | Memberikan urutan perintah command prompt untuk menghubungkan repositori lokal ke GitHub. | Dijalankan di terminal Laragon dan diverifikasi melalui pesan sukses dari terminal serta halaman GitHub. | Diterima dan dieksekusi secara berurutan. |
+| 2026-08-26 | Menyusun format dokumentasi README.md proyek praktikum web. | Buat README.md berisi identitas, deskripsi proyek, teknologi, cara menjalankan, dan URL lokal. | Menghasilkan kerangka teks Markdown profesional yang mencakup seluruh poin persyaratan tugas. | Diperiksa secara visual di dalam editor Visual Studio Code sebelum di-commit dan di-push ke GitHub. | Diterima dan disimpan sebagai dokumentasi resmi repositori. |
+| 2026-08-26 | Menyusun format file AI_USAGE_LOG.md sesuai instruksi praktikum. | Buat AI_USAGE_LOG.md dengan kolom tanggal, tujuan, prompt, hasil, verifikasi, dan keputusan. | Menghasilkan tabel log penggunaan AI dalam format Markdown yang terstruktur rapi. | Dicocokkan dengan kriteria lembar kerja praktikum Pemrograman Web berbasis OBE. | Diterima, dibuat, dan disimpan ke dalam direktori proyek. |
