@@ -1,23 +1,17 @@
-# Praktikum Pemrograman Web (OBE)
+# Proyek Pemrograman Web - Warung Makan Hanisa
 
-## Identitas Mata Kuliah
-* **Mata Kuliah:** Pemrograman Web
-* **Prodi / Fakultas:** Teknik Komputer
+## Deskripsi Singkat
+Halaman web statis untuk proyek semester individu **Warung Makan Hanisa**, yang dikembangkan menggunakan HTML5 semantik dan menerapkan prinsip aksesibilitas dasar (seperti `lang`, *heading hierarchy*, *alt text* gambar, asosiasi *label* pada *form*, serta navigasi keyboard dengan tombol Tab).
 
-## Deskripsi Singkat Proyek
-gunakan satu kasus yang disepakati dan dikembangkan secara incremental. Kasus diutamakan terkait wilayah pesisir/perbatasan, layanan publik, IoT/dashboard, UMKM, industri, atau technopreneurship sesuai RPS. 
+## Cara Menjalankan Proyek
+1. Pastikan aplikasi **Laragon 5** sudah diinstal dan layanan **Apache** dalam kondisi *Running*.
+2. Simpan atau clone folder proyek di direktori `C:\laragon\www\pemweb-obe\`.
+3. Buka browser dan akses melalui URL lokal: 
+   `http://localhost/pemweb-obe/`
 
-## Teknologi yang Digunakan
-* **HTML5 / PHP**
-* **Laragon 5** (Local Server Environment)
-* **Visual Studio Code** (Code Editor)
-* **Git & GitHub** (Version Control)
-
-## Cara Menjalankan Proyek Melalui Laragon 5
-1. Pastikan aplikasi **Laragon** sudah berjalan dan layanan server (Apache/Nginx & MySQL) sudah dalam status **Start All**.
-2. Pastikan folder proyek `pemweb-obe` sudah berada di dalam direktori root Laragon, yaitu `C:\laragon\www\`.
-3. Buka browser web (Google Chrome/Edge).
-4. Akses proyek menggunakan URL lokal di bawah ini.
-
-## URL Lokal
-* `http://localhost/pemweb-obe/`
+## Fitur yang Telah Selesai
+- [x] Struktur HTML5 semantik (`header`, `nav`, `main`, `section`, `article`, `footer`)
+- [x] Hierarchy heading yang logis (`h1`, `h2`, `h3`)
+- [x] Implementasi *alt text* pada gambar menu makanan dan minuman
+- [x] Form pemesanan dan kontak interaktif dengan label terasosiasi (`for` dan `id`)
+- [x] Uji navigasi aksesibilitas menggunakan tombol `Tab` pada keyboard

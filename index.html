@@ -95,19 +95,17 @@
         </section>
 
             <!-- =========================================
-                SECTION 3 : MENU MAKANAN
-                D NOMOR 4 - GAMBAR DAN ALT TEXT
-                ========================================= -->
+                 SECTION 3 : MENU MAKANAN
+                 ========================================= -->
             <section id="makanan">
 
                 <h2>Menu Makanan</h2>
 
-                <!-- Mie Ayam Biasa -->
+                <!-- Mie Ayam Biasa (Alt Informatif 1) -->
                 <article>
-
                     <img
                         src="images/mie-ayam-biasa.jpg"
-                        alt="Mie Ayam Biasa Warung Makan Hanisa"
+                        alt="Porsi mie ayam lengkap dengan taburan ayam cincang, irisan daun bawang, dan kuah hangat"
                         width="250">
                     <h3>Mie Ayam Biasa</h3>
                     <p>
@@ -115,11 +113,11 @@
                     </p>
                 </article>
 
-                <!-- Mie Ayam Pentol -->
+                <!-- Mie Ayam Pentol (Alt Informatif 2) -->
                 <article>
                     <img
                         src="images/mie-ayam-pentol.jpg"
-                        alt="Mie Ayam Pentol Warung Makan Hanisa"
+                        alt="Mangkok mie ayam disajikan dengan tambahan beberapa butir pentol sapi kenyal"
                         width="250">
                     <h3>Mie Ayam Pentol</h3>
                     <p>
@@ -127,11 +125,11 @@
                     </p>
                 </article>
 
-                <!-- Bakso -->
+                <!-- Bakso (Alt Dekoratif 1 - Kosong) -->
                 <article>
                     <img
                         src="images/bakso.jpg"
-                        alt="Bakso Warung Makan Hanisa"
+                        alt=""
                         width="250">
                     <h3>Bakso</h3>
                     <p>
@@ -139,12 +137,11 @@
                     </p>
                 </article>
 
-
-                <!-- Soto -->
+                <!-- Soto (Alt Dekoratif 2 - Kosong) -->
                 <article>
                     <img
                         src="images/soto.jpg"
-                        alt="Soto Warung Makan Hanisa"
+                        alt=""
                         width="250">
                     <h3>Soto</h3>
                     <p>
@@ -155,16 +152,15 @@
 
 
             <!-- =========================================
-                SECTION 4 : MENU MINUMAN
-                D NOMOR 4 - GAMBAR DAN ALT TEXT
-                ========================================= -->
+                 SECTION 4 : MENU MINUMAN
+                 ========================================= -->
             <section id="minuman">
                 <h2>Menu Minuman</h2>
                 <!-- Air Es -->
                 <article>
                     <img
                         src="images/air-es.jpg"
-                        alt="Air Es Warung Makan Hanisa"
+                        alt="Gelas berisi air es segar dengan pecahan es batu"
                         width="250">
                     <h3>Air Es</h3>
                     <p>
@@ -172,12 +168,14 @@
                     </p>
                 </article>
 
-                <!-- Teh Ice / Hot -->
+                <!-- Teh Ice / Hot (Gambar Berfungsi Sebagai Link) -->
                 <article>
-                    <img
-                        src="images/teh.jpg"
-                        alt="Teh Ice atau Teh Hot Warung Makan Hanisa"
-                        width="250">
+                    <a href="#pesan-antar">
+                        <img
+                            src="images/teh.jpg"
+                            alt="Klik untuk memesan menu Teh pilihan melalui layanan pesan antar"
+                            width="250">
+                    </a>
                     <h3>Teh Ice / Hot</h3>
                     <p>
                         Tersedia dalam pilihan dingin atau panas.
@@ -188,9 +186,8 @@
                 <article>
                     <img
                         src="images/sirup-susu.jpg"
-                        alt="Sirup Susu Ice atau Hot Warung Makan Hanisa"
-                        width="250"
-                    >
+                        alt="Gelas sirup susu manis berukuran sedang"
+                        width="250">
                     <h3>Sirup Susu Ice / Hot</h3>
                     <p>
                         Tersedia dalam pilihan dingin atau panas.
@@ -201,7 +198,7 @@
                 <article>
                     <img
                         src="images/jeruk.jpg"
-                        alt="Jeruk Ice atau Jeruk Hot Warung Makan Hanisa"
+                        alt="Es jeruk segar dengan irisan jeruk nipis di atasnya"
                         width="250">
                     <h3>Jeruk Ice / Hot</h3>
                     <p>
@@ -215,7 +212,6 @@
              ========================================= -->
         <section id="pesan-antar">
             <h2>Layanan Pesan Antar</h2>
-            <!-- Informasi pesan antar -->
             <article>
                 <h3>Pesan Makanan dari Rumah</h3>
                 <p>
@@ -235,23 +231,19 @@
                 <h3>Form Pesan Antar</h3>
                 <form>
                     <!-- Nama pelanggan -->
-                    <div>
-                        <label for="nama-pelanggan">
-                            Nama Pelanggan:
-                        </label>
+                    <p>
+                        <label for="nama-pelanggan">Nama Pelanggan:</label><br>
                         <input
                             type="text"
                             id="nama-pelanggan"
                             name="nama-pelanggan"
                             required
                         >
-                    </div>
-                    <br>
+                    </p>
+
                     <!-- Nomor WhatsApp -->
-                    <div>
-                        <label for="whatsapp">
-                            Nomor WhatsApp:
-                        </label>
+                    <p>
+                        <label for="whatsapp">Nomor WhatsApp:</label><br>
                         <input
                             type="tel"
                             id="whatsapp"
@@ -259,94 +251,45 @@
                             placeholder="Contoh: 081234567890"
                             required
                         >
-                    </div>
-                    <br>
+                    </p>
 
                     <!-- Alamat pengantaran -->
-                    <div>
-                        <label for="alamat-pelanggan">
-                            Alamat Pengantaran:
-                        </label>
+                    <p>
+                        <label for="alamat-pelanggan">Alamat Pengantaran:</label><br>
                         <textarea
                             id="alamat-pelanggan"
                             name="alamat-pelanggan"
                             rows="4"
                             required
                         ></textarea>
-                    </div>
-                    <br>
+                    </p>
 
                     <!-- Pilih pesanan -->
-                    <div>
-                        <label for="pesanan">
-                            Pilih Pesanan:
-                        </label>
+                    <p>
+                        <label for="pesanan">Pilih Pesanan:</label><br>
                         <select
                             id="pesanan"
                             name="pesanan"
                             required
                         >
-                            <option value="">
-                                -- Pilih Menu --
-                            </option>
-
-                            <!-- Menu makanan -->
-                            <option value="mie-ayam-biasa">
-                                Mie Ayam Biasa
-                            </option>
-                            <option value="mie-ayam-pentol">
-                                Mie Ayam Pentol
-                            </option>
-                            <option value="bakso">
-                                Bakso
-                            </option>
-                            <option value="soto">
-                                Soto
-                            </option>
-
-                            <!-- Menu minuman -->
-                            <option value="air-es">
-                                Air Es
-                            </option>
-
-                            <option value="teh-ice">
-                                Teh Ice
-                            </option>
-
-                            <option value="teh-hot">
-                                Teh Hot
-                            </option>
-
-                            <option value="sirup-susu-ice">
-                                Sirup Susu Ice
-                            </option>
-
-                            <option value="sirup-susu-hot">
-                                Sirup Susu Hot
-                            </option>
-
-                            <option value="jeruk-ice">
-                                Jeruk Ice
-                            </option>
-
-                            <option value="jeruk-hot">
-                                Jeruk Hot
-                            </option>
-
+                            <option value="">-- Pilih Menu --</option>
+                            <option value="mie-ayam-biasa">Mie Ayam Biasa</option>
+                            <option value="mie-ayam-pentol">Mie Ayam Pentol</option>
+                            <option value="bakso">Bakso</option>
+                            <option value="soto">Soto</option>
+                            <option value="air-es">Air Es</option>
+                            <option value="teh-ice">Teh Ice</option>
+                            <option value="teh-hot">Teh Hot</option>
+                            <option value="sirup-susu-ice">Sirup Susu Ice</option>
+                            <option value="sirup-susu-hot">Sirup Susu Hot</option>
+                            <option value="jeruk-ice">Jeruk Ice</option>
+                            <option value="jeruk-hot">Jeruk Hot</option>
                         </select>
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Jumlah pesanan -->
-                    <div>
-
-                        <label for="jumlah">
-                            Jumlah Pesanan:
-                        </label>
-
+                    <p>
+                        <label for="jumlah">Jumlah Pesanan:</label><br>
                         <input
                             type="number"
                             id="jumlah"
@@ -355,41 +298,25 @@
                             value="1"
                             required
                         >
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Catatan pesanan -->
-                    <div>
-
-                        <label for="catatan">
-                            Catatan Pesanan:
-                        </label>
-
+                    <p>
+                        <label for="catatan">Catatan Pesanan:</label><br>
                         <textarea
                             id="catatan"
                             name="catatan"
                             rows="4"
                             placeholder="Contoh: Tidak pedas"
                         ></textarea>
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Tombol kirim pesanan -->
-                    <button type="submit">
-                        Kirim Pesanan
-                    </button>
-
-
+                    <p>
+                        <button type="submit">Kirim Pesanan</button>
+                    </p>
                 </form>
-
             </article>
-
         </section>
 
 
@@ -397,20 +324,16 @@
              SECTION 6 : TENTANG KAMI
              ========================================= -->
         <section id="tentang">
-
             <h2>Tentang Warung Makan Hanisa</h2>
-
             <p>
                 Warung Makan Hanisa menyediakan berbagai pilihan makanan
                 dan minuman untuk memenuhi kebutuhan pelanggan.
             </p>
-
             <p>
                 Website ini merupakan bagian dari pengembangan
                 Sistem Informasi Manajemen Penjualan dan Sistem Kasir
                 Berbasis Web.
             </p>
-
         </section>
 
 
@@ -418,113 +341,55 @@
              SECTION 7 : ULASAN PELANGGAN
              ========================================= -->
         <section id="ulasan">
-
             <h2>Ulasan Pelanggan</h2>
-
             <p>
                 Berikan penilaian dan pengalaman Anda setelah menikmati
                 makanan dan minuman di Warung Makan Hanisa.
             </p>
 
-
             <!-- Contoh ulasan -->
             <article>
-
                 <h3>Contoh Ulasan</h3>
-
-                <p>
-                    Rating: ★★★★★
-                </p>
-
-                <p>
-                    <strong>Nama:</strong> Pelanggan Hanisa
-                </p>
-
-                <p>
-                    Makanannya enak dan pelayanannya baik.
-                </p>
-
+                <p>Rating: ★★★★★</p>
+                <p><strong>Nama:</strong> Pelanggan Hanisa</p>
+                <p>Makanannya enak dan pelayanannya baik.</p>
             </article>
-
 
             <!-- Form ulasan pelanggan -->
             <article>
-
                 <h3>Berikan Ulasan Anda</h3>
-
                 <form enctype="multipart/form-data">
-
-
                     <!-- Nama pelanggan -->
-                    <div>
-
-                        <label for="nama-ulasan">
-                            Nama:
-                        </label>
-
+                    <p>
+                        <label for="nama-ulasan">Nama:</label><br>
                         <input
                             type="text"
                             id="nama-ulasan"
                             name="nama-ulasan"
                             required
                         >
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Rating -->
-                    <div>
-
-                        <label for="rating">
-                            Rating:
-                        </label>
-
+                    <p>
+                        <label for="rating">Rating:</label><br>
                         <select
                             id="rating"
                             name="rating"
                             required
                         >
-
-                            <option value="">
-                                -- Pilih Rating --
-                            </option>
-
-                            <option value="1">
-                                ★ 1 Bintang
-                            </option>
-
-                            <option value="2">
-                                ★★ 2 Bintang
-                            </option>
-
-                            <option value="3">
-                                ★★★ 3 Bintang
-                            </option>
-
-                            <option value="4">
-                                ★★★★ 4 Bintang
-                            </option>
-
-                            <option value="5">
-                                ★★★★★ 5 Bintang
-                            </option>
-
+                            <option value="">-- Pilih Rating --</option>
+                            <option value="1">★ 1 Bintang</option>
+                            <option value="2">★★ 2 Bintang</option>
+                            <option value="3">★★★ 3 Bintang</option>
+                            <option value="4">★★★★ 4 Bintang</option>
+                            <option value="5">★★★★★ 5 Bintang</option>
                         </select>
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Isi ulasan -->
-                    <div>
-
-                        <label for="isi-ulasan">
-                            Ulasan Anda:
-                        </label>
-
+                    <p>
+                        <label for="isi-ulasan">Ulasan Anda:</label><br>
                         <textarea
                             id="isi-ulasan"
                             name="isi-ulasan"
@@ -532,105 +397,109 @@
                             placeholder="Tuliskan pengalaman Anda..."
                             required
                         ></textarea>
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Upload foto -->
-                    <div>
-
-                        <label for="foto-ulasan">
-                            Tambahkan Foto:
-                        </label>
-
+                    <p>
+                        <label for="foto-ulasan">Tambahkan Foto:</label><br>
                         <input
                             type="file"
                             id="foto-ulasan"
                             name="foto-ulasan"
                             accept="image/*"
                         >
-
-                    </div>
-
-                    <br>
-
+                    </p>
 
                     <!-- Tombol kirim ulasan -->
-                    <button type="submit">
-                        Kirim Ulasan
-                    </button>
-
-
+                    <p>
+                        <button type="submit">Kirim Ulasan</button>
+                    </p>
                 </form>
-
             </article>
-
         </section>
 
 
-<!-- =========================================
-     SECTION 8 : KONTAK DAN ALAMAT
-     ========================================= -->
-<section id="kontak">
+        <!-- =========================================
+             SECTION 8 : KONTAK DAN ALAMAT
+             ========================================= -->
+        <section id="kontak">
+            <h2>Kontak dan Alamat</h2>
 
-    <h2>Kontak dan Alamat</h2>
+            <!-- Informasi alamat -->
+            <article>
+                <h3>Alamat Warung</h3>
+                <address>
+                    Jl. Bangsal Tengah, Bunyu, Kalimantan Utara
+                </address>
+            </article>
 
-    <!-- Informasi alamat -->
-    <article>
-        <h3>Alamat Warung</h3>
+            <!-- Form Kontak Sederhana -->
+            <article>
+                <h3>Kirim Pesan / Pertanyaan</h3>
+                <form>
+                    <!-- Nama Pengirim -->
+                    <p>
+                        <label for="kontak-nama">Nama Lengkap:</label><br>
+                        <input 
+                            type="text" 
+                            id="kontak-nama" 
+                            name="kontak-nama" 
+                            placeholder="Masukkan nama Anda" 
+                            required
+                        >
+                    </p>
+
+                    <!-- Email / Kontak -->
+                    <p>
+                        <label for="kontak-email">Email atau No. WhatsApp:</label><br>
+                        <input 
+                            type="text" 
+                            id="kontak-email" 
+                            name="kontak-email" 
+                            placeholder="Contoh: 081234567890" 
+                            required
+                        >
+                    </p>
+
+                    <!-- Pesan -->
+                    <p>
+                        <label for="kontak-pesan">Pesan Anda:</label><br>
+                        <textarea 
+                            id="kontak-pesan" 
+                            name="kontak-pesan" 
+                            rows="4" 
+                            placeholder="Tuliskan pesan atau pertanyaan di sini..." 
+                            required
+                        ></textarea>
+                    </p>
+
+                    <!-- Tombol Kirim -->
+                    <p>
+                        <button type="submit">Kirim Pesan</button>
+                    </p>
+                </form>
+            </article>
+        </section>
+
+    </main>
+
+
+    <!-- =========================================
+         FOOTER / BAGIAN PALING BAWAH WEBSITE
+         ========================================= -->
+    <footer>
+        <p>
+            &copy; 2026 Warung Makan Hanisa
+        </p>
+        <p>
+            Sistem Informasi Manajemen Penjualan
+            dan Sistem Kasir Berbasis Web
+        </p>
         <address>
             Jl. Bangsal Tengah, Bunyu, Kalimantan Utara
         </address>
-    </article>
+    </footer>
 
-    <!-- Form Kontak Sederhana -->
-    <article>
-        <h3>Kirim Pesan / Pertanyaan</h3>
-        <form>
-            <!-- Nama Pengirim -->
-            <div>
-                <label for="kontak-nama">Nama Lengkap:</label><br>
-                <input 
-                    type="text" 
-                    id="kontak-nama" 
-                    name="kontak-nama" 
-                    placeholder="Masukkan nama Anda" 
-                    required
-                >
-            </div>
-            <br>
+</body>
 
-            <!-- Email / Kontak -->
-            <div>
-                <label for="kontak-email">Email atau No. WhatsApp:</label><br>
-                <input 
-                    type="text" 
-                    id="kontak-email" 
-                    name="kontak-email" 
-                    placeholder="Contoh: 081234567890" 
-                    required
-                >
-            </div>
-            <br>
-
-            <!-- Pesan -->
-            <div>
-                <label for="kontak-pesan">Pesan Anda:</label><br>
-                <textarea 
-                    id="kontak-pesan" 
-                    name="kontak-pesan" 
-                    rows="4" 
-                    placeholder="Tuliskan pesan atau pertanyaan di sini..." 
-                    required
-                ></textarea>
-            </div>
-            <br>
-
-            <!-- Tombol Kirim -->
-            <button type="submit">Kirim Pesan</button>
-        </form>
-    </article>
-
-</section>
+</html>
