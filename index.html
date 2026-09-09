@@ -1,505 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
-
 <head>
-    <!-- =========================================
-         PENGATURAN DASAR WEBSITE
-         ========================================= -->
-    <!-- Pengaturan karakter -->
-    <meta charset="UTF-8">
-    <!-- Agar website menyesuaikan perangkat -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Deskripsi website -->
-    <meta name="description"
-        content="Warung Makan Hanisa - Menu, Pesan Antar, Ulasan Pelanggan, dan Informasi Warung">
-    <!-- Judul pada tab browser -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Website Resmi Warung Makan Hanisa - Menu Makanan, Minuman, dan Pesan Antar">
     <title>Warung Makan Hanisa</title>
 </head>
-
 <body>
-    <!-- =========================================
-         HEADER / BAGIAN ATAS WEBSITE
-         ========================================= -->
-    <header>
-        <!-- Judul utama website -->
-        <h1>Warung Makan Hanisa</h1>
-        <!-- Deskripsi singkat -->
-        <p>
-            Nikmati Makanan dan Minuman Favorit Anda
-        </p>
 
-        <!-- =========================================
-             NAVIGASI UTAMA WEBSITE
-             ========================================= -->
+    <!-- Header & Navigasi Utama -->
+    <header>
+        <a href="#main">Lewati ke konten utama</a>
+        <h1>Warung Makan Hanisa</h1>
+        <p>Nikmati Makanan dan Minuman Favorit Anda</p>
+        
         <nav aria-label="Navigasi utama">
-            <a href="#beranda">Beranda</a>
-            <a href="#operasional">Jam Operasional</a>
-            <a href="#makanan">Menu Makanan</a>
-            <a href="#minuman">Menu Minuman</a>
-            <a href="#pesan-antar">Pesan Antar</a>
-            <a href="#tentang">Tentang Kami</a>
-            <a href="#ulasan">Ulasan</a>
+            <a href="#beranda">Beranda</a> |
+            <a href="#jam-operasional">Jam Operasional</a> |
+            <a href="#menu-makanan">Menu Makanan</a> |
+            <a href="#menu-minuman">Menu Minuman</a> |
+            <a href="#pesan-antar">Pesan Antar</a> |
+            <a href="#tentang">Tentang Kami</a> |
+            <a href="#ulasan">Ulasan</a> |
             <a href="#kontak">Kontak</a>
         </nav>
     </header>
 
-    <!-- =========================================
-         MAIN / KONTEN UTAMA WEBSITE
-         ========================================= -->
-    <main>
-
-        <!-- =========================================
-             SECTION 1 : BERANDA
-             ========================================= -->
+    <!-- Konten Utama -->
+    <main id="main">
+        
+        <!-- Section 1: Beranda -->
         <section id="beranda">
             <h2>Selamat Datang di Warung Makan Hanisa</h2>
-            <p>
-                Warung Makan Hanisa menyediakan berbagai pilihan
-                makanan dan minuman untuk pelanggan.
-            </p>
-            <!-- Link menuju menu -->
-            <p>
-                <a href="#makanan">Lihat Menu Kami</a>
-            </p>
+            <p>Warung Makan Hanisa menyediakan berbagai pilihan makanan dan minuman lezat untuk pelanggan.</p>
+            <img src="images/mie-ayam-biasa.jpg" alt="Porsi nikmat Mie Ayam Biasa Warung Makan Hanisa" width="250">
+            <p><a href="#menu-makanan">Lihat Menu Kami</a></p>
         </section>
 
-        <!-- =========================================
-             SECTION 2 : JAM OPERASIONAL
-             ========================================= -->
-        <section id="operasional">
+        <!-- Section 2: Jam Operasional -->
+        <section id="jam-operasional">
             <h2>Jam Operasional</h2>
-            <!-- Status operasional -->
             <article>
                 <h3>Status Hari Ini</h3>
-                <p>
-                    BUKA
-                </p>
-                <p>
-                    Warung Makan Hanisa sedang melayani pelanggan.
-                </p>
+                <p><strong>BUKA</strong></p>
+                <p>Warung Makan Hanisa sedang melayani pelanggan.</p>
             </article>
-
-            <!-- Jam operasional normal -->
             <article>
                 <h3>Jam Operasional Normal</h3>
-                <p>
-                    17:00 - 22:00
-                </p>
+                <p>17:00 - 22:00</p>
+                <p>Status operasional dapat berubah apabila terdapat kendala atau keadaan tertentu.</p>
             </article>
-
-            <!-- Informasi tambahan -->
-            <p>
-                Status operasional dapat berubah apabila terdapat
-                kendala atau keadaan tertentu.
-            </p>
         </section>
 
-            <!-- =========================================
-                 SECTION 3 : MENU MAKANAN
-                 ========================================= -->
-            <section id="makanan">
+        <!-- Section 3: Menu Makanan -->
+        <section id="menu-makanan">
+            <h2>Menu Makanan</h2>
+            <article>
+                <h3>Mie Ayam Biasa</h3>
+                <img src="images/mie-ayam-biasa.jpg" alt="Foto Mie Ayam Biasa" width="250">
+                <p>Mie ayam dengan cita rasa khas Warung Makan Hanisa.</p>
+            </article>
+            <article>
+                <h3>Mie Ayam Pentol</h3>
+                <img src="images/mie-ayam-pentol.jpg" alt="Foto Mie Ayam Pentol komplit" width="250">
+                <p>Mie ayam komplit dengan tambahan pentol gurih.</p>
+            </article>
+            <article>
+                <h3>Bakso</h3>
+                <img src="images/bakso.jpg" alt="Foto Bakso hangat berkuah segar" width="250">
+                <p>Bakso sapi pilihan dengan kuah kaldu yang mantap.</p>
+            </article>
+            <article>
+                <h3>Soto</h3>
+                <img src="images/soto.jpg" alt="Foto Soto ayam spesial" width="250">
+                <p>Soto hangat dengan suwiran ayam dan kuah gurih berempah.</p>
+            </article>
+        </section>
 
-                <h2>Menu Makanan</h2>
+        <!-- Section 4: Menu Minuman -->
+        <section id="menu-minuman">
+            <h2>Menu Minuman</h2>
+            <article>
+                <h3>Aneka Pilihan Minuman</h3>
+                <ul>
+                    <li>
+                        <strong>Air Es</strong><br>
+                        <img src="images/air-es.jpg" alt="Es air mineral segar" width="200">
+                    </li>
+                    <li>
+                        <strong>Teh (Ice / Hot)</strong><br>
+                        <img src="images/teh.jpg" alt="Teh manis hangat dan es teh segar" width="200">
+                    </li>
+                    <li>
+                        <strong>Sirup Susu (Ice / Hot)</strong><br>
+                        <img src="images/sirup-susu.jpg" alt="Sirup susu manis menyegarkan" width="200">
+                    </li>
+                    <li>
+                        <strong>Jeruk (Ice / Hot)</strong><br>
+                        <img src="images/jeruk.jpg" alt="Es jeruk peras asli" width="200">
+                    </li>
+                </ul>
+            </article>
+        </section>
 
-                <!-- Mie Ayam Biasa (Alt Informatif 1) -->
-                <article>
-                    <img
-                        src="images/mie-ayam-biasa.jpg"
-                        alt="Porsi mie ayam lengkap dengan taburan ayam cincang, irisan daun bawang, dan kuah hangat"
-                        width="250">
-                    <h3>Mie Ayam Biasa</h3>
-                    <p>
-                        Mie ayam dengan cita rasa khas Warung Makan Hanisa.
-                    </p>
-                </article>
-
-                <!-- Mie Ayam Pentol (Alt Informatif 2) -->
-                <article>
-                    <img
-                        src="images/mie-ayam-pentol.jpg"
-                        alt="Mangkok mie ayam disajikan dengan tambahan beberapa butir pentol sapi kenyal"
-                        width="250">
-                    <h3>Mie Ayam Pentol</h3>
-                    <p>
-                        Mie ayam dengan tambahan pentol.
-                    </p>
-                </article>
-
-                <!-- Bakso (Alt Dekoratif 1 - Kosong) -->
-                <article>
-                    <img
-                        src="images/bakso.jpg"
-                        alt=""
-                        width="250">
-                    <h3>Bakso</h3>
-                    <p>
-                        Bakso hangat dengan kuah yang nikmat.
-                    </p>
-                </article>
-
-                <!-- Soto (Alt Dekoratif 2 - Kosong) -->
-                <article>
-                    <img
-                        src="images/soto.jpg"
-                        alt=""
-                        width="250">
-                    <h3>Soto</h3>
-                    <p>
-                        Soto hangat dengan cita rasa khas.
-                    </p>
-                </article>
-            </section>
-
-
-            <!-- =========================================
-                 SECTION 4 : MENU MINUMAN
-                 ========================================= -->
-            <section id="minuman">
-                <h2>Menu Minuman</h2>
-                <!-- Air Es -->
-                <article>
-                    <img
-                        src="images/air-es.jpg"
-                        alt="Gelas berisi air es segar dengan pecahan es batu"
-                        width="250">
-                    <h3>Air Es</h3>
-                    <p>
-                        Minuman dingin yang menyegarkan.
-                    </p>
-                </article>
-
-                <!-- Teh Ice / Hot (Gambar Berfungsi Sebagai Link) -->
-                <article>
-                    <a href="#pesan-antar">
-                        <img
-                            src="images/teh.jpg"
-                            alt="Klik untuk memesan menu Teh pilihan melalui layanan pesan antar"
-                            width="250">
-                    </a>
-                    <h3>Teh Ice / Hot</h3>
-                    <p>
-                        Tersedia dalam pilihan dingin atau panas.
-                    </p>
-                </article>
-
-                <!-- Sirup Susu Ice / Hot -->
-                <article>
-                    <img
-                        src="images/sirup-susu.jpg"
-                        alt="Gelas sirup susu manis berukuran sedang"
-                        width="250">
-                    <h3>Sirup Susu Ice / Hot</h3>
-                    <p>
-                        Tersedia dalam pilihan dingin atau panas.
-                    </p>
-                </article>
-
-                <!-- Jeruk Ice / Hot -->
-                <article>
-                    <img
-                        src="images/jeruk.jpg"
-                        alt="Es jeruk segar dengan irisan jeruk nipis di atasnya"
-                        width="250">
-                    <h3>Jeruk Ice / Hot</h3>
-                    <p>
-                        Tersedia dalam pilihan dingin atau panas.
-                    </p>
-                </article>
-            </section>
-
-        <!-- =========================================
-             SECTION 5 : LAYANAN PESAN ANTAR
-             ========================================= -->
+        <!-- Section 5: Layanan Pesan Antar & Form -->
         <section id="pesan-antar">
             <h2>Layanan Pesan Antar</h2>
             <article>
-                <h3>Pesan Makanan dari Rumah</h3>
-                <p>
-                    Tidak sempat datang ke Warung Makan Hanisa?
-                    Anda dapat memesan makanan dan minuman
-                    melalui layanan pesan antar.
-                </p>
-                <p>
-                    Silakan isi formulir pemesanan di bawah ini.
-                </p>
-            </article>
-
-            <!-- =====================================
-                 FORM PESAN ANTAR
-                 ===================================== -->
-            <article>
                 <h3>Form Pesan Antar</h3>
-                <form>
-                    <!-- Nama pelanggan -->
-                    <p>
-                        <label for="nama-pelanggan">Nama Pelanggan:</label><br>
-                        <input
-                            type="text"
-                            id="nama-pelanggan"
-                            name="nama-pelanggan"
-                            required
-                        >
-                    </p>
-
-                    <!-- Nomor WhatsApp -->
-                    <p>
-                        <label for="whatsapp">Nomor WhatsApp:</label><br>
-                        <input
-                            type="tel"
-                            id="whatsapp"
-                            name="whatsapp"
-                            placeholder="Contoh: 081234567890"
-                            required
-                        >
-                    </p>
-
-                    <!-- Alamat pengantaran -->
-                    <p>
-                        <label for="alamat-pelanggan">Alamat Pengantaran:</label><br>
-                        <textarea
-                            id="alamat-pelanggan"
-                            name="alamat-pelanggan"
-                            rows="4"
-                            required
-                        ></textarea>
-                    </p>
-
-                    <!-- Pilih pesanan -->
-                    <p>
-                        <label for="pesanan">Pilih Pesanan:</label><br>
-                        <select
-                            id="pesanan"
-                            name="pesanan"
-                            required
-                        >
-                            <option value="">-- Pilih Menu --</option>
-                            <option value="mie-ayam-biasa">Mie Ayam Biasa</option>
-                            <option value="mie-ayam-pentol">Mie Ayam Pentol</option>
-                            <option value="bakso">Bakso</option>
-                            <option value="soto">Soto</option>
-                            <option value="air-es">Air Es</option>
-                            <option value="teh-ice">Teh Ice</option>
-                            <option value="teh-hot">Teh Hot</option>
-                            <option value="sirup-susu-ice">Sirup Susu Ice</option>
-                            <option value="sirup-susu-hot">Sirup Susu Hot</option>
-                            <option value="jeruk-ice">Jeruk Ice</option>
-                            <option value="jeruk-hot">Jeruk Hot</option>
-                        </select>
-                    </p>
-
-                    <!-- Jumlah pesanan -->
-                    <p>
-                        <label for="jumlah">Jumlah Pesanan:</label><br>
-                        <input
-                            type="number"
-                            id="jumlah"
-                            name="jumlah"
-                            min="1"
-                            value="1"
-                            required
-                        >
-                    </p>
-
-                    <!-- Catatan pesanan -->
-                    <p>
-                        <label for="catatan">Catatan Pesanan:</label><br>
-                        <textarea
-                            id="catatan"
-                            name="catatan"
-                            rows="4"
-                            placeholder="Contoh: Tidak pedas"
-                        ></textarea>
-                    </p>
-
-                    <!-- Tombol kirim pesanan -->
-                    <p>
-                        <button type="submit">Kirim Pesanan</button>
-                    </p>
+                <form action="#" method="post">
+                    <div>
+                        <label for="nama">Nama Lengkap</label><br>
+                        <input type="text" id="nama" name="nama" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="email">Email Pengguna</label><br>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <br>
+                    <div>
+                        <label for="pesan">Detail Pesanan & Alamat</label><br>
+                        <textarea id="pesan" name="pesan" rows="3" required></textarea>
+                    </div>
+                    <br>
+                    <button type="submit">Kirim Pesanan</button>
                 </form>
             </article>
         </section>
 
-
-        <!-- =========================================
-             SECTION 6 : TENTANG KAMI
-             ========================================= -->
+        <!-- Section 6: Tentang & Kontak -->
         <section id="tentang">
             <h2>Tentang Warung Makan Hanisa</h2>
-            <p>
-                Warung Makan Hanisa menyediakan berbagai pilihan makanan
-                dan minuman untuk memenuhi kebutuhan pelanggan.
-            </p>
-            <p>
-                Website ini merupakan bagian dari pengembangan
-                Sistem Informasi Manajemen Penjualan dan Sistem Kasir
-                Berbasis Web.
-            </p>
+            <p>Kami menyajikan hidangan rumahan berkualitas untuk masyarakat Tarakan.</p>
         </section>
 
-
-        <!-- =========================================
-             SECTION 7 : ULASAN PELANGGAN
-             ========================================= -->
         <section id="ulasan">
             <h2>Ulasan Pelanggan</h2>
-            <p>
-                Berikan penilaian dan pengalaman Anda setelah menikmati
-                makanan dan minuman di Warung Makan Hanisa.
-            </p>
-
-            <!-- Contoh ulasan -->
             <article>
-                <h3>Contoh Ulasan</h3>
-                <p>Rating: ★★★★★</p>
-                <p><strong>Nama:</strong> Pelanggan Hanisa</p>
-                <p>Makanannya enak dan pelayanannya baik.</p>
-            </article>
-
-            <!-- Form ulasan pelanggan -->
-            <article>
-                <h3>Berikan Ulasan Anda</h3>
-                <form enctype="multipart/form-data">
-                    <!-- Nama pelanggan -->
-                    <p>
-                        <label for="nama-ulasan">Nama:</label><br>
-                        <input
-                            type="text"
-                            id="nama-ulasan"
-                            name="nama-ulasan"
-                            required
-                        >
-                    </p>
-
-                    <!-- Rating -->
-                    <p>
-                        <label for="rating">Rating:</label><br>
-                        <select
-                            id="rating"
-                            name="rating"
-                            required
-                        >
-                            <option value="">-- Pilih Rating --</option>
-                            <option value="1">★ 1 Bintang</option>
-                            <option value="2">★★ 2 Bintang</option>
-                            <option value="3">★★★ 3 Bintang</option>
-                            <option value="4">★★★★ 4 Bintang</option>
-                            <option value="5">★★★★★ 5 Bintang</option>
-                        </select>
-                    </p>
-
-                    <!-- Isi ulasan -->
-                    <p>
-                        <label for="isi-ulasan">Ulasan Anda:</label><br>
-                        <textarea
-                            id="isi-ulasan"
-                            name="isi-ulasan"
-                            rows="5"
-                            placeholder="Tuliskan pengalaman Anda..."
-                            required
-                        ></textarea>
-                    </p>
-
-                    <!-- Upload foto -->
-                    <p>
-                        <label for="foto-ulasan">Tambahkan Foto:</label><br>
-                        <input
-                            type="file"
-                            id="foto-ulasan"
-                            name="foto-ulasan"
-                            accept="image/*"
-                        >
-                    </p>
-
-                    <!-- Tombol kirim ulasan -->
-                    <p>
-                        <button type="submit">Kirim Ulasan</button>
-                    </p>
-                </form>
+                <h3>Testimoni</h3>
+                <p>"Mie ayamnya sangat enak dan porsinya pas!" - Pelanggan Setia</p>
             </article>
         </section>
 
-
-        <!-- =========================================
-             SECTION 8 : KONTAK DAN ALAMAT
-             ========================================= -->
         <section id="kontak">
             <h2>Kontak dan Alamat</h2>
-
-            <!-- Informasi alamat -->
-            <article>
-                <h3>Alamat Warung</h3>
-                <address>
-                    Jl. Bangsal Tengah, Bunyu, Kalimantan Utara
-                </address>
-            </article>
-
-            <!-- Form Kontak Sederhana -->
-            <article>
-                <h3>Kirim Pesan / Pertanyaan</h3>
-                <form>
-                    <!-- Nama Pengirim -->
-                    <p>
-                        <label for="kontak-nama">Nama Lengkap:</label><br>
-                        <input 
-                            type="text" 
-                            id="kontak-nama" 
-                            name="kontak-nama" 
-                            placeholder="Masukkan nama Anda" 
-                            required
-                        >
-                    </p>
-
-                    <!-- Email / Kontak -->
-                    <p>
-                        <label for="kontak-email">Email atau No. WhatsApp:</label><br>
-                        <input 
-                            type="text" 
-                            id="kontak-email" 
-                            name="kontak-email" 
-                            placeholder="Contoh: 081234567890" 
-                            required
-                        >
-                    </p>
-
-                    <!-- Pesan -->
-                    <p>
-                        <label for="kontak-pesan">Pesan Anda:</label><br>
-                        <textarea 
-                            id="kontak-pesan" 
-                            name="kontak-pesan" 
-                            rows="4" 
-                            placeholder="Tuliskan pesan atau pertanyaan di sini..." 
-                            required
-                        ></textarea>
-                    </p>
-
-                    <!-- Tombol Kirim -->
-                    <p>
-                        <button type="submit">Kirim Pesan</button>
-                    </p>
-                </form>
-            </article>
+            <p>Alamat: Jl. Kusuma Bangsa, Tarakan</p>
         </section>
 
     </main>
 
-
-    <!-- =========================================
-         FOOTER / BAGIAN PALING BAWAH WEBSITE
-         ========================================= -->
+    <!-- Footer -->
     <footer>
-        <p>
-            &copy; 2026 Warung Makan Hanisa
-        </p>
-        <p>
-            Sistem Informasi Manajemen Penjualan
-            dan Sistem Kasir Berbasis Web
-        </p>
-        <address>
-            Jl. Bangsal Tengah, Bunyu, Kalimantan Utara
-        </address>
+        <p>&copy; 2026 Warung Makan Hanisa</p>
     </footer>
 
 </body>
-
 </html>
