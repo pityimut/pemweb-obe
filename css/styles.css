@@ -1,0 +1,166 @@
+/* =========================================
+   Reset Ringan & Custom Properties 
+   ========================================= */
+:root {
+    --brand: #d97706;
+    --surface: #ffffff;
+    --bg-color: #f9fafb;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    line-height: 1.6;
+    color: #1f2937;
+    background-color: var(--bg-color);
+}
+
+header, main, footer {
+    width: min(100% - 2rem, 72rem);
+    margin-inline: auto;
+    padding: 1rem 0;
+}
+
+h2 {
+    border-bottom: 2px solid var(--brand);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* =========================================
+   POSISI GAMBAR UTAMA BERANDA (Tengah)
+   ========================================= */
+#beranda {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.gambar-utama {
+    display: block;
+    margin: 1.5rem auto; 
+    width: 100%;
+    max-width: 400px;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* =========================================
+   GRID UNTUK MAKANAN, MINUMAN & JAM (Berjajar)
+   ========================================= */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.menu-grid article {
+    background-color: var(--surface);
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Mengunci ukuran gambar di dalam card agar seragam dan rapi */
+.menu-grid article img {
+    width: 100%;
+    height: 180px; 
+    object-fit: cover; 
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* =========================================
+   CARD BIASA (Untuk Form dan Ulasan)
+   ========================================= */
+.card-biasa {
+    background-color: var(--surface);
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    margin-bottom: 3rem;
+}
+
+/* =========================================
+   NAVIGASI FLEXBOX DAN FORM
+   ========================================= */
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    background-color: var(--surface);
+    padding: 1rem;
+    border-radius: var(--radius);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--brand);
+    font-weight: bold;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background: var(--brand);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1rem;
+}
+
+/* =========================================
+   FOCUS STATE (Aksesibilitas)
+   ========================================= */
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 3px solid #111;
+    outline-offset: 3px;
+}
+
+.skip-link {
+    position: absolute;
+    top: -40px;
+    background: var(--brand);
+    color: white;
+    padding: 0.5rem;
+}
+.skip-link:focus {
+    top: 0;
+}
+
+/* =========================================
+   LANGKAH 6: MEDIA QUERY (Untuk Layar Besar)
+   ========================================= */
+@media (min-width: 48rem) {
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    header, main, footer {
+        padding: 2rem 0;
+    }
+
+    .menu-grid {
+        gap: 2rem;
+    }
+}
