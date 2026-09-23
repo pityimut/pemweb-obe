@@ -36,13 +36,83 @@ console.log("--- LATIHAN 2: Cari Menu Berdasarkan ID 2 ---", hasilCariId);
 // ==========================================
 console.log("--- LATIHAN 3: Ringkasan Menu (Destructuring & Template Literals) ---");
 inventarisWarung.forEach(item => {
-    // Destructuring objek item
     const { nama, harga, kategori, lokasi } = item;
-    
-    // Menggunakan Template Literals
     console.log(`Menu ${nama} (${kategori}) berharga Rp ${harga} tersedia di ${lokasi}.`);
 });
 
-// Fungsi bawaan utils sebelumnya
 const hasilRingkasan = ringkasInventaris(inventarisWarung);
 console.log("--- Hasil RINGKASAN (dari utils.js) ---", hasilRingkasan);
+
+// ==========================================
+// RENDER MENU MENGGUNAKAN DOM MANIPULATION
+// ==========================================
+const menuContainer = document.getElementById('menu-container');
+
+function renderItems(dataArray) {
+    if (!menuContainer) return;
+    
+    menuContainer.innerHTML = '';
+    menuContainer.style.display = 'grid';
+    menuContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+    menuContainer.style.gap = '1.5rem';
+    menuContainer.style.marginBottom = '3rem';
+
+    dataArray.forEach(item => {
+        const card = document.createElement('article');
+        card.style.backgroundColor = 'var(--surface)';
+        card.style.padding = '1rem';
+        card.style.border = '1px solid #ddd';
+        card.style.borderRadius = 'var(--radius)';
+        card.style.textAlign = 'center';
+        card.style.display = 'flex';
+        card.style.flexDirection = 'column';
+
+        const title = document.createElement('h3');
+        title.textContent = item.nama;
+
+        const desc = document.createElement('p');
+        desc.textContent = `${item.kategori} - Rp ${item.harga}`;
+
+        card.append(title, desc);
+        menuContainer.append(card);
+    });
+}
+
+// Jalankan render awal
+renderItems(inventarisWarung);
+
+// ==========================================
+// EVENT LISTENER UNTUK TOMBOL INTERAKTIF
+// ==========================================
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', (e) => {
+        const kategoriFilter = e.currentTarget.getAttribute('data-filter');
+        
+        if (kategoriFilter === 'all') {
+            renderItems(inventarisWarung);
+        } else {
+            const filteredData = inventarisWarung.filter(item => item.kategori === kategoriFilter);
+            renderItems(filteredData);
+        }
+    });
+});
+
+const prefButton = document.getElementById('pref-btn');
+
+if (prefButton) {
+    prefButton.addEventListener('click', () => {
+        let currentView = localStorage.getItem('cardView') || 'grid';
+        
+        if (currentView === 'grid') {
+            currentView = 'list';
+            if (menuContainer) menuContainer.style.gridTemplateColumns = '1fr';
+        } else {
+            currentView = 'grid';
+            if (menuContainer) menuContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+        }
+
+        localStorage.setItem('cardView', currentView);
+    });
+}
