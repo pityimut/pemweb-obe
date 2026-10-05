@@ -1,249 +1,1318 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Website Resmi Warung Makan Hanisa - Menu Makanan, Minuman, Pesan Antar, dan Kontak">
-    <title>Warung Makan Hanisa</title>
-    
-    <!-- Menghubungkan CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warung Hanisa - Sistem Kasir & Manajemen</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
-    <a href="#main" class="skip-link">Lewati ke konten utama</a>
+    <!-- ================= NOTIFIKASI TOAST CONTAINER ================= -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
 
-    <!-- HEADER & NAVIGASI -->
-    <header>
-        <h1>Warung Makan Hanisa</h1>
-        <p>Nikmati Makanan dan Minuman Favorit Anda</p>
+    <!-- ============================================================== -->
+    <!-- 1. AUTHENTICATION SECTION (DAFTAR PERTAMA KALI / LOGIN)        -->
+    <!-- ============================================================== -->
+    <section id="auth-section" class="auth-wrapper">
+        <div class="auth-bg-blob blob-blue"></div>
+        <div class="auth-bg-blob blob-pink"></div>
 
-        <nav aria-label="Navigasi utama">
-            <a href="#beranda">Beranda</a>
-            <a href="#jam-operasional">Jam Operasional</a>
-            <a href="#menu-makanan">Menu Makanan</a>
-            <a href="#menu-minuman">Menu Minuman</a>
-            <a href="#pesan-antar">Pesan Antar</a>
-            <a href="#tentang">Tentang Kami</a>
-            <a href="#ulasan">Ulasan</a>
-            <a href="#kontak">Kontak</a>
-        </nav>
-    </header>
+        <div class="auth-card-container">
+            <!-- Left Branding Side -->
+            <div class="auth-brand-side">
+                <div class="brand-badge">
+                    <span class="brand-badge-icon">☕</span>
+                    <span>WARUNG HANISA POS</span>
+                </div>
 
-    <main id="main">
+                <div class="auth-hero-text">
+                    <h1>Sistem Kasir Pintar & Manajemen Warung</h1>
+                    <p>
+                        Kelola transaksi penjualan, kontrol ketersediaan stok produk, 
+                        layani pelanggan lebih cepat, dan pantau keuangan warung Anda dalam satu aplikasi terintegrasi.
+                    </p>
+                </div>
 
-        <!-- SECTION 1: BERANDA -->
-        <section id="beranda">
-            <h2>Selamat Datang di Warung Makan Hanisa</h2>
-            <img src="images/mie-ayam-biasa.jpg" alt="Porsi Mie Ayam Biasa Warung Makan Hanisa" class="gambar-utama">
-            <p>Warung Makan Hanisa menyediakan berbagai pilihan makanan dan minuman lezat untuk pelanggan.</p>
-            <p><a href="#menu-makanan">Lihat Menu Makanan Kami</a></p>
-        </section>
+                <div class="auth-features-list">
+                    <div class="auth-feature-item">
+                        <div class="af-icon">🛒</div>
+                        <div>
+                            <strong>Kasir Cepat & Responsif</strong>
+                            <p>Hitung total, kembalian, dan cetak struk instan</p>
+                        </div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="af-icon">📦</div>
+                        <div>
+                            <strong>Kontrol Stok Otomatis</strong>
+                            <p>Stok berkurang seketika dengan peringatan stok habis</p>
+                        </div>
+                    </div>
+                    <div class="auth-feature-item">
+                        <div class="af-icon">👥</div>
+                        <div>
+                            <strong>Manajemen Pelanggan & Catatan</strong>
+                            <p>Dukungan pembayaran tunai, QRIS, dan kasbon</p>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- SECTION 2: JAM OPERASIONAL -->
-        <section id="jam-operasional" class="menu-grid">
-            <h2 style="grid-column: 1 / -1;">Jam Operasional</h2>
-            <article>
-                <h3>Status Hari Ini</h3>
-                <p><strong>BUKA</strong></p>
-                <p>Warung Makan Hanisa sedang melayani pelanggan.</p>
-            </article>
-            <article>
-                <h3>Jam Operasional Normal</h3>
-                <p>17:00 - 22:00</p>
-                <p>Status operasional dapat berubah apabila terdapat kendala atau keadaan tertentu.</p>
-            </article>
-        </section>
-
-        <!-- SECTION TAMBAHAN MODUL 05: TOOLBAR FILTER & PREFERENSI -->
-        <section id="dinamis-section" style="padding: 1rem 2rem;">
-            <h2>Daftar Menu Interaktif</h2>
-            <div class="toolbar" style="margin-bottom: 1rem;">
-                <button class="filter-btn" data-filter="all">Semua</button>
-                <button class="filter-btn" data-filter="Makanan">Makanan</button>
-                <button class="filter-btn" data-filter="Minuman">Minuman</button>
-                <button id="pref-btn" class="pref-btn" style="margin-left: 1rem;">Ubah Tampilan (Grid/List)</button>
+                <div class="auth-footer-note">
+                    <span>✨ Didesain dengan palet elegan Biru, Pink & Putih</span>
+                    <small>© 2026 Warung Hanisa. Semua Hak Dilindungi.</small>
+                </div>
             </div>
-            
-            <!-- CONTAINER TEMPAT RENDER MENU INTERAKTIF -->
-            <div id="menu-container"></div>
-        </section>
 
-        <!-- SECTION 3: MENU MAKANAN -->
-        <section id="menu-makanan" class="menu-grid">
-            <h2 style="grid-column: 1 / -1;">Menu Makanan</h2>
-            <article>
-                <h3>Mie Ayam Biasa</h3>
-                <img src="images/mie-ayam-biasa.jpg" alt="Mie Ayam Biasa">
-                <p>Mie ayam dengan cita rasa khas Warung Makan Hanisa.</p>
-            </article>
-            <article>
-                <h3>Mie Ayam Pentol</h3>
-                <img src="images/mie-ayam-pentol.jpg" alt="Mie Ayam Pentol">
-                <p>Mie ayam komplit dengan tambahan pentol gurih.</p>
-            </article>
-            <article>
-                <h3>Bakso</h3>
-                <img src="images/bakso.jpg" alt="Bakso">
-                <p>Bakso sapi pilihan dengan kuah kaldu yang mantap.</p>
-            </article>
-            <article>
-                <h3>Soto</h3>
-                <img src="images/soto.jpg" alt="Soto">
-                <p>Soto hangat dengan suwiran ayam dan kuah gurih berempah.</p>
-            </article>
-        </section>
+            <!-- Right Form Side (Registers first time, otherwise Logins) -->
+            <div class="auth-form-side">
+                
+                <!-- REGISTRATION FORM (Tampil jika belum pernah daftar) -->
+                <div id="auth-register-box" class="auth-form-card hidden">
+                    <div class="form-card-header">
+                        <div class="pill-badge pill-pink">
+                            <span>✨ Pendaftaran Akun Pertama Kali</span>
+                        </div>
+                        <h2>Daftar Akun Utama</h2>
+                        <p class="subtitle">Satu akun untuk kasir sekaligus administrator Warung Hanisa.</p>
+                    </div>
 
-        <!-- SECTION 4: MENU MINUMAN -->
-        <section id="menu-minuman" class="menu-grid">
-            <h2 style="grid-column: 1 / -1;">Menu Minuman</h2>
-            <article>
-                <h3>Air Es</h3>
-                <img src="images/air-es.jpg" alt="Air es segar">
-            </article>
-            <article>
-                <h3>Teh (Ice / Hot)</h3>
-                <img src="images/teh.jpg" alt="Teh manis dingin atau hangat">
-            </article>
-            <article>
-                <h3>Sirup Susu (Ice / Hot)</h3>
-                <img src="images/sirup-susu.jpg" alt="Minuman sirup susu">
-            </article>
-            <article>
-                <h3>Jeruk (Ice / Hot)</h3>
-                <img src="images/jeruk.jpg" alt="Minuman es jeruk">
-            </article>
-        </section>
+                    <form id="register-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="reg-fullname">Nama Lengkap Pemilik / Kasir</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">👤</span>
+                                <input type="text" id="reg-fullname" placeholder="Contoh: Hanisa Salsabila" value="Hanisa" required>
+                            </div>
+                        </div>
 
-        <!-- SECTION 5: PESAN ANTAR -->
-        <section id="pesan-antar">
-            <h2>Layanan Pesan Antar</h2>
-            <article class="card-biasa">
-                <form action="#" method="post">
-                    <fieldset>
-                        <legend>Data Pemesan</legend>
-                        <p><label>Nama Lengkap</label><br><input type="text" required></p>
-                        <p><label>Email Pengguna</label><br><input type="email" required></p>
-                        <p><label>Detail Pesanan</label><br><textarea rows="4" required></textarea></p>
-                        <p><label>Alamat Pengantaran</label><br><textarea rows="3" required></textarea></p>
-                        <button type="submit">Kirim Pesanan</button>
-                    </fieldset>
-                </form>
-            </article>
-        </section>
+                        <div class="form-group">
+                            <label for="reg-storename">Nama Warung / Usaha</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">🏪</span>
+                                <input type="text" id="reg-storename" placeholder="Warung Hanisa" value="Warung Hanisa" required>
+                            </div>
+                        </div>
 
-        <!-- SECTION 6: TENTANG KAMI -->
-        <section id="tentang">
-            <h2>Tentang Warung Makan Hanisa</h2>
-            <p>Warung Makan Hanisa menyajikan hidangan rumahan berkualitas untuk masyarakat Tarakan.</p>
-        </section>
+                        <div class="form-group">
+                            <label for="reg-username">Username</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">🔑</span>
+                                <input type="text" id="reg-username" placeholder="Buat username (contoh: hanisa)" value="hanisa" autocomplete="username" required>
+                            </div>
+                        </div>
 
-        <!-- SECTION 7: ULASAN -->
-        <section id="ulasan">
-            <h2>Ulasan Pelanggan</h2>
-            <article class="card-biasa">
-                <p>"Mie ayamnya sangat enak dan porsinya pas!" - Pelanggan Setia</p>
-            </article>
-        </section>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reg-password">Password</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">🔒</span>
+                                    <input type="password" id="reg-password" placeholder="Password" value="123456" autocomplete="new-password" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="reg-confirm-password">Konfirmasi Password</label>
+                                <div class="input-with-icon">
+                                    <span class="input-icon">🔒</span>
+                                    <input type="password" id="reg-confirm-password" placeholder="Ulangi password" value="123456" autocomplete="new-password" required>
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- SECTION 8: KONTAK -->
-        <section id="kontak">
-            <h2>Kontak dan Masukan</h2>
-            <p>Alamat: Jl. Kusuma Bangsa, Tarakan</p>
-            <form action="#" method="post">
-                <fieldset>
-                    <legend>Form Kontak</legend>
-                    <p><label>Nama Lengkap</label><br><input type="text" required></p>
-                    <p><label>Email</label><br><input type="email" required></p>
-                    <p><label>Masukan</label><br><textarea rows="3" required></textarea></p>
-                    <button type="submit">Kirim Masukan</button>
-                </fieldset>
+                        <div class="role-notice-card">
+                            <span class="rnc-icon">🛡️</span>
+                            <div>
+                                <strong>Akun Tunggal (Dual-Role)</strong>
+                                <p>Akun ini memiliki hak akses penuh sebagai <b>Kasir Penjualan</b> dan <b>Administrator Sistem</b>.</p>
+                            </div>
+                        </div>
+
+                        <button type="submit" id="btn-submit-register" class="btn btn-primary-gradient btn-block btn-lg">
+                            Daftarkan Akun & Lanjut ke Login →
+                        </button>
+                    </form>
+
+                    <div class="auth-switch-link">
+                        <span>Sudah pernah mendaftar?</span>
+                        <button type="button" id="switch-to-login" class="btn-link">Masuk ke Akun</button>
+                    </div>
+                </div>
+
+                <!-- LOGIN FORM (Tampil setelah mendaftar atau jika akun sudah ada) -->
+                <div id="auth-login-box" class="auth-form-card">
+                    <div class="form-card-header">
+                        <div class="pill-badge pill-blue">
+                            <span>👋 Selamat Datang Kembali</span>
+                        </div>
+                        <h2>Masuk Sistem Kasir</h2>
+                        <p class="subtitle">Silakan login menggunakan akun Kasir & Admin Warung Hanisa.</p>
+                    </div>
+
+                    <div id="registered-account-badge" class="registered-account-badge">
+                        <div class="rab-avatar">H</div>
+                        <div class="rab-info">
+                            <strong id="rab-name">Hanisa (Kasir & Admin)</strong>
+                            <small id="rab-username">Username: hanisa</small>
+                        </div>
+                        <span class="rab-status">Terdaftar</span>
+                    </div>
+
+                    <form id="login-form" class="auth-form">
+                        <div class="form-group">
+                            <label for="login-username">Username</label>
+                            <div class="input-with-icon">
+                                <span class="input-icon">👤</span>
+                                <input type="text" id="login-username" placeholder="Masukkan username" autocomplete="username" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="label-with-action">
+                                <label for="login-password">Password</label>
+                                <button type="button" id="btn-toggle-pwd" class="btn-text-small">Lihat</button>
+                            </div>
+                            <div class="input-with-icon">
+                                <span class="input-icon">🔒</span>
+                                <input type="password" id="login-password" placeholder="Masukkan password" autocomplete="current-password" required>
+                            </div>
+                        </div>
+
+                        <div class="form-check-row">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" id="remember-me" checked>
+                                <span class="checkmark"></span>
+                                <span>Ingat sesi saya di perangkat ini</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" id="btn-submit-login" class="btn btn-primary-gradient btn-block btn-lg">
+                            Masuk ke Dasbor Kasir →
+                        </button>
+                    </form>
+
+                    <div class="auth-footer-actions">
+                        <button type="button" id="switch-to-register" class="btn-link-muted">
+                            ⚙️ Daftarkan Ulang Akun Baru
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- 2. MAIN APPLICATION (SETELAH LOGIN BERHASIL)                    -->
+    <!-- ============================================================== -->
+    <div id="app-container" class="app-container hidden">
+
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="app-sidebar" id="app-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <div class="brand-logo-icon">☕</div>
+                    <div class="brand-details">
+                        <span class="brand-name">Warung Hanisa</span>
+                        <span class="brand-sub">Kasir & Admin POS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active User Card in Sidebar -->
+            <div class="sidebar-user-card">
+                <div class="sidebar-avatar" id="sidebar-avatar-initial">H</div>
+                <div class="sidebar-user-info">
+                    <strong id="sidebar-display-name">Hanisa</strong>
+                    <span class="badge-role">Kasir & Admin</span>
+                </div>
+            </div>
+
+            <!-- Nav Links -->
+            <nav class="sidebar-nav">
+                <div class="nav-group-title">MENU UTAMA</div>
+
+                <button type="button" class="nav-btn active" data-page="dasbor" id="nav-dasbor">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dasbor</span>
+                </button>
+
+                <button type="button" class="nav-btn" data-page="pos" id="nav-pos">
+                    <span class="nav-icon">🛒</span>
+                    <span class="nav-text">Kasir (POS)</span>
+                    <span class="nav-badge-pink" id="nav-cart-indicator">0</span>
+                </button>
+
+                <button type="button" class="nav-btn" data-page="produk" id="nav-produk">
+                    <span class="nav-icon">📦</span>
+                    <span class="nav-text">Data Produk</span>
+                </button>
+
+                <button type="button" class="nav-btn" data-page="pelanggan" id="nav-pelanggan">
+                    <span class="nav-icon">👥</span>
+                    <span class="nav-text">Data Pelanggan</span>
+                </button>
+
+                <div class="nav-group-title">LAPORAN & KEUANGAN</div>
+
+                <button type="button" class="nav-btn" data-page="transaksi" id="nav-transaksi">
+                    <span class="nav-icon">📋</span>
+                    <span class="nav-text">Riwayat Transaksi</span>
+                </button>
+
+                <div class="nav-divider"></div>
+
+                <!-- 15. Keluar (Logout) -->
+                <button type="button" class="nav-btn btn-nav-logout" id="btn-sidebar-logout">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Keluar (Logout)</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="sidebar-time-badge">
+                    <span class="stb-icon">🕒</span>
+                    <span id="live-clock">19:25:00 WIB</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN VIEWPORT -->
+        <main class="app-main">
+
+            <!-- Top Header Bar -->
+            <header class="app-topbar">
+                <div class="topbar-left">
+                    <button type="button" id="sidebar-toggle-btn" class="btn-icon sidebar-toggle" aria-label="Toggle Sidebar">
+                        ☰
+                    </button>
+                    <div class="page-title-group">
+                        <span class="page-eyebrow" id="topbar-breadcrumb">WARUNG HANISA • SISTEM KASIR</span>
+                        <h2 class="page-title" id="current-page-title">Dasbor Ringkasan</h2>
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="date-chip">
+                        <span class="chip-icon">📅</span>
+                        <span id="topbar-date-string">Kamis, 1 Oktober 2026</span>
+                    </div>
+
+                    <!-- Quick POS action -->
+                    <button type="button" id="topbar-btn-pos" class="btn btn-primary-gradient btn-sm">
+                        <span>🛒 Buka Kasir</span>
+                    </button>
+
+                    <div class="user-chip-dropdown">
+                        <div class="user-avatar-mini" id="topbar-avatar-initial">H</div>
+                        <span class="user-chip-name" id="topbar-username">Hanisa</span>
+                        <button type="button" id="btn-topbar-logout" class="btn-icon-danger" title="Keluar dari Akun">
+                            🚪
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- APP PAGES CONTENT CONTAINER -->
+            <div class="app-content-body">
+
+                <!-- ============================================================== -->
+                <!-- 2. DASBOR (RINGKASAN, STATISTIK, ALERT STOK, SHORTCUT)         -->
+                <!-- ============================================================== -->
+                <section id="page-dasbor" class="app-page-view">
+                    
+                    <!-- Welcome Hero Banner -->
+                    <div class="welcome-hero-banner">
+                        <div class="whb-content">
+                            <div class="pill-badge pill-glass">
+                                <span>✨ Sesi Kasir & Admin Aktif</span>
+                            </div>
+                            <h2>Selamat Datang, <span id="dash-welcome-name">Hanisa</span>! 👋</h2>
+                            <p>
+                                Pantau perkembangan transaksi kasir, pendapatan hari ini, dan pastikan stok menu Warung Hanisa selalu terpenuhi.
+                            </p>
+                            <div class="whb-actions">
+                                <button type="button" class="btn btn-white-solid" id="dash-btn-open-pos">
+                                    🛒 Mulai Transaksi Penjualan →
+                                </button>
+                                <button type="button" class="btn btn-glass" id="dash-btn-add-product">
+                                    ➕ Tambah Menu Produk
+                                </button>
+                            </div>
+                        </div>
+                        <div class="whb-illustration">
+                            <span class="floating-emoji">🍜</span>
+                            <span class="floating-emoji e2">🍹</span>
+                            <span class="floating-emoji e3">🧾</span>
+                        </div>
+                    </div>
+
+                    <!-- 4 Main Statistics Cards -->
+                    <div class="stats-grid">
+                        <!-- Stat 1: Total Penjualan Hari Ini -->
+                        <div class="stat-card stat-blue">
+                            <div class="stat-icon-wrapper">
+                                <span>💰</span>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Pendapatan Hari Ini</span>
+                                <strong class="stat-value" id="dash-stat-revenue">Rp 0</strong>
+                                <span class="stat-subtext" id="dash-stat-revenue-count">0 Transaksi Berhasil</span>
+                            </div>
+                        </div>
+
+                        <!-- Stat 2: Total Transaksi Keseluruhan -->
+                        <div class="stat-card stat-pink">
+                            <div class="stat-icon-wrapper">
+                                <span>🧾</span>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Total Transaksi</span>
+                                <strong class="stat-value" id="dash-stat-tx-count">0</strong>
+                                <span class="stat-subtext">Tercatat di sistem</span>
+                            </div>
+                        </div>
+
+                        <!-- Stat 3: Total Produk & Stok -->
+                        <div class="stat-card stat-cyan">
+                            <div class="stat-icon-wrapper">
+                                <span>📦</span>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Data Produk Menu</span>
+                                <strong class="stat-value" id="dash-stat-product-count">8 Menu</strong>
+                                <span class="stat-subtext" id="dash-stat-stock-count">Total 240 Porsi Stok</span>
+                            </div>
+                        </div>
+
+                        <!-- Stat 4: Total Pelanggan -->
+                        <div class="stat-card stat-purple">
+                            <div class="stat-icon-wrapper">
+                                <span>👥</span>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-label">Pelanggan Terdaftar</span>
+                                <strong class="stat-value" id="dash-stat-customer-count">3 Orang</strong>
+                                <span class="stat-subtext">Termasuk pelanggan umum</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alert Box: Peringatan Stok Menipis (< 5 pcs) -->
+                    <div id="low-stock-alert-box" class="alert-box-stock">
+                        <div class="asb-header">
+                            <div class="asb-title">
+                                <span class="asb-icon">⚠️</span>
+                                <div>
+                                    <strong>Peringatan Stok Menipis / Perlu Diisi Ulang!</strong>
+                                    <p>Terdapat produk dengan sisa stok kurang dari 5 porsi. Segera lakukan restock agar tidak kehabisan pesanan.</p>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-pink-outline" id="dash-btn-manage-stock">
+                                Kelola Stok di Data Produk →
+                            </button>
+                        </div>
+                        <div id="low-stock-items-container" class="low-stock-chips-grid">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Dashboard 2 Columns: Recent Transactions & Quick POS Preview -->
+                    <div class="dashboard-columns-grid">
+                        
+                        <!-- Left: Transaksi Terbaru Hari Ini -->
+                        <div class="card-panel">
+                            <div class="card-panel-header">
+                                <div>
+                                    <h3>Transaksi Terbaru</h3>
+                                    <p class="panel-subtitle">Aktivitas penjualan yang baru saja diselesaikan</p>
+                                </div>
+                                <button type="button" class="btn-link" id="dash-view-all-tx">Lihat Semua →</button>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Invoice</th>
+                                            <th>Waktu</th>
+                                            <th>Pelanggan</th>
+                                            <th>Metode</th>
+                                            <th>Total Bayar</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dash-recent-tx-tbody">
+                                        <!-- Injected by JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right: Ringkasan Menu Terlaris & Metode Bayar -->
+                        <div class="card-panel">
+                            <div class="card-panel-header">
+                                <div>
+                                    <h3>Metode Pembayaran</h3>
+                                    <p class="panel-subtitle">Sebaran transaksi berdasarkan metode</p>
+                                </div>
+                            </div>
+
+                            <div class="payment-method-stats">
+                                <div class="pms-item">
+                                    <div class="pms-icon cash">💵</div>
+                                    <div class="pms-details">
+                                        <span>Tunai (Cash)</span>
+                                        <strong id="pms-cash-total">Rp 0</strong>
+                                    </div>
+                                    <span class="pms-badge" id="pms-cash-count">0 tx</span>
+                                </div>
+
+                                <div class="pms-item">
+                                    <div class="pms-icon qris">📱</div>
+                                    <div class="pms-details">
+                                        <span>QRIS</span>
+                                        <strong id="pms-qris-total">Rp 0</strong>
+                                    </div>
+                                    <span class="pms-badge" id="pms-qris-count">0 tx</span>
+                                </div>
+
+                                <div class="pms-item">
+                                    <div class="pms-icon transfer">🏦</div>
+                                    <div class="pms-details">
+                                        <span>Transfer Bank</span>
+                                        <strong id="pms-transfer-total">Rp 0</strong>
+                                    </div>
+                                    <span class="pms-badge" id="pms-transfer-count">0 tx</span>
+                                </div>
+
+                                <div class="pms-item">
+                                    <div class="pms-icon kasbon">📝</div>
+                                    <div class="pms-details">
+                                        <span>Kasbon / Hutang</span>
+                                        <strong id="pms-kasbon-total">Rp 0</strong>
+                                    </div>
+                                    <span class="pms-badge" id="pms-kasbon-count">0 tx</span>
+                                </div>
+                            </div>
+
+                            <div class="warung-quick-info">
+                                <span class="wqi-icon">💡</span>
+                                <p>
+                                    Stok produk akan <b>otomatis berkurang</b> secara realtime setiap kali transaksi pembayaran berhasil dikonfirmasi.
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- ============================================================== -->
+                <!-- 5, 6, 7, 8, 9, 10, 11: HALAMAN KASIR (POINT OF SALE)           -->
+                <!-- ============================================================== -->
+                <section id="page-pos" class="app-page-view hidden">
+                    
+                    <div class="pos-layout-wrapper">
+                        
+                        <!-- Left: Catalog & Product Selector -->
+                        <div class="pos-catalog-column">
+                            
+                            <!-- Search & Category Filters -->
+                            <div class="pos-toolbar-card">
+                                <div class="pos-search-wrapper">
+                                    <span class="search-icon">🔍</span>
+                                    <input 
+                                        type="search" 
+                                        id="pos-search-input" 
+                                        placeholder="Cari menu makanan, minuman, atau kode produk..." 
+                                        autocomplete="off"
+                                    >
+                                    <button type="button" id="pos-clear-search" class="btn-clear-search hidden">✕</button>
+                                </div>
+
+                                <div class="category-tabs-scroll" id="pos-category-tabs">
+                                    <button type="button" class="cat-pill active" data-category="Semua">
+                                        🍽️ Semua Menu
+                                    </button>
+                                    <button type="button" class="cat-pill" data-category="Makanan">
+                                        🍜 Makanan
+                                    </button>
+                                    <button type="button" class="cat-pill" data-category="Minuman">
+                                        🍹 Minuman
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Products Grid (5. Pilih Produk) -->
+                            <div class="pos-products-grid" id="pos-products-container">
+                                <!-- Rendered dynamically by JS -->
+                            </div>
+
+                        </div>
+
+                        <!-- Right: 7. Keranjang Belanja & 8. Hitung Pembayaran & Checkout -->
+                        <aside class="pos-cart-column">
+                            <div class="cart-sticky-container">
+                                
+                                <!-- Cart Header -->
+                                <div class="cart-card-header">
+                                    <div class="cch-title">
+                                        <span class="cch-icon">🛒</span>
+                                        <div>
+                                            <h3>Keranjang Kasir</h3>
+                                            <span id="cart-item-count-label">0 item dipilih</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" id="btn-clear-cart" class="btn-text-danger" title="Kosongkan Semua Keranjang">
+                                        🗑️ Kosongkan
+                                    </button>
+                                </div>
+
+                                <!-- Customer Selector (4. Data Pelanggan Selection) -->
+                                <div class="cart-customer-selector">
+                                    <div class="ccs-label-row">
+                                        <label for="cart-customer-select">👤 Pelanggan:</label>
+                                        <button type="button" id="btn-quick-add-customer" class="btn-link-small">
+                                            + Pelanggan Baru
+                                        </button>
+                                    </div>
+                                    <select id="cart-customer-select" class="custom-select">
+                                        <!-- Injected by JS -->
+                                    </select>
+                                </div>
+
+                                <!-- Cart Items List -->
+                                <div class="cart-items-scroll-area" id="cart-items-container">
+                                    <!-- Empty state or list of items -->
+                                </div>
+
+                                <!-- 8. Hitung Total Pembayaran -->
+                                <div class="cart-calculation-panel">
+                                    <div class="calc-row">
+                                        <span>Subtotal Belanja</span>
+                                        <strong id="cart-subtotal-val">Rp 0</strong>
+                                    </div>
+
+                                    <div class="calc-row discount-row">
+                                        <div class="discount-label-group">
+                                            <span>Diskon / Potongan</span>
+                                            <button type="button" id="btn-toggle-discount" class="btn-badge-toggle">
+                                                Ubah
+                                            </button>
+                                        </div>
+                                        <span id="cart-discount-val" class="text-pink">- Rp 0</span>
+                                    </div>
+
+                                    <!-- Expandable Discount Input -->
+                                    <div id="discount-input-drawer" class="discount-drawer hidden">
+                                        <div class="discount-quick-btns">
+                                            <button type="button" class="btn-chip" data-disc="0">0%</button>
+                                            <button type="button" class="btn-chip" data-disc="5">5%</button>
+                                            <button type="button" class="btn-chip" data-disc="10">10%</button>
+                                            <button type="button" class="btn-chip" data-disc="2000">Rp 2.000</button>
+                                            <button type="button" class="btn-chip" data-disc="5000">Rp 5.000</button>
+                                        </div>
+                                        <div class="discount-custom-input">
+                                            <input type="number" id="custom-discount-amount" placeholder="Nominal Diskon (Rp)" min="0">
+                                            <button type="button" id="btn-apply-discount" class="btn btn-sm btn-pink">Terapkan</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="calc-divider"></div>
+
+                                    <div class="calc-row total-highlight-row">
+                                        <div>
+                                            <span class="total-label">TOTAL AKHIR</span>
+                                            <small class="total-sub">Sudah termasuk pajak & diskon</small>
+                                        </div>
+                                        <strong class="total-amount-display" id="cart-grand-total">Rp 0</strong>
+                                    </div>
+                                </div>
+
+                                <!-- 9. Pilih Metode Pembayaran & 10. Proses Pembayaran -->
+                                <div class="cart-checkout-actions">
+                                    <button type="button" id="btn-open-payment-modal" class="btn btn-primary-gradient btn-block btn-xl btn-checkout" disabled>
+                                        <span>💳 Lanjut Pembayaran</span>
+                                        <span id="btn-checkout-price">Rp 0</span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </aside>
+
+                    </div>
+
+                </section>
+
+                <!-- ============================================================== -->
+                <!-- 3. DATA PRODUK (CRUD MENU, HARGA, STOK, RESTOCK)               -->
+                <!-- ============================================================== -->
+                <section id="page-produk" class="app-page-view hidden">
+                    
+                    <div class="section-top-toolbar">
+                        <div class="st-left">
+                            <div class="search-input-pill">
+                                <span>🔍</span>
+                                <input type="search" id="product-search-table" placeholder="Cari nama menu, kode, kategori...">
+                            </div>
+
+                            <select id="product-filter-category" class="custom-select select-pill">
+                                <option value="Semua">Semua Kategori</option>
+                                <option value="Makanan">Makanan</option>
+                                <option value="Minuman">Minuman</option>
+                            </select>
+
+                            <select id="product-filter-stock" class="custom-select select-pill">
+                                <option value="Semua">Semua Status Stok</option>
+                                <option value="Tersedia">Stok Tersedia (> 5)</option>
+                                <option value="Menipis">Stok Menipis (1 - 5)</option>
+                                <option value="Habis">Stok Habis (0)</option>
+                            </select>
+                        </div>
+
+                        <div class="st-right">
+                            <button type="button" id="btn-open-add-product" class="btn btn-primary-gradient">
+                                <span>➕ Tambah Produk Menu</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Products Table Card -->
+                    <div class="card-panel table-panel">
+                        <div class="table-responsive">
+                            <table class="custom-table" id="products-table">
+                                <thead>
+                                    <tr>
+                                        <th>Foto</th>
+                                        <th>Kode</th>
+                                        <th>Nama Produk</th>
+                                        <th>Kategori</th>
+                                        <th>Harga Modal</th>
+                                        <th>Harga Jual</th>
+                                        <th>Laba / Margin</th>
+                                        <th>Sisa Stok</th>
+                                        <th>Tambah Stok Cepat</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="products-tbody">
+                                    <!-- Rendered dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ============================================================== -->
+                <!-- 4. DATA PELANGGAN (CRUD PELANGGAN, WA, TOTAL TRANSAKSI)        -->
+                <!-- ============================================================== -->
+                <section id="page-pelanggan" class="app-page-view hidden">
+                    
+                    <div class="section-top-toolbar">
+                        <div class="st-left">
+                            <div class="search-input-pill">
+                                <span>🔍</span>
+                                <input type="search" id="customer-search-table" placeholder="Cari nama pelanggan, no telepon/WA...">
+                            </div>
+                        </div>
+
+                        <div class="st-right">
+                            <button type="button" id="btn-open-add-customer" class="btn btn-pink-gradient">
+                                <span>➕ Tambah Pelanggan Baru</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Customers Table Card -->
+                    <div class="card-panel table-panel">
+                        <div class="table-responsive">
+                            <table class="custom-table" id="customers-table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nama Pelanggan</th>
+                                        <th>No. Telepon / WhatsApp</th>
+                                        <th>Alamat / Meja / Catatan</th>
+                                        <th>Total Order</th>
+                                        <th>Total Belanja</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="customers-tbody">
+                                    <!-- Rendered dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+                <!-- ============================================================== -->
+                <!-- 13. SIMPAN DATA TRANSAKSI (RIWAYAT, CETAK STRUK, EXPORT)       -->
+                <!-- ============================================================== -->
+                <section id="page-transaksi" class="app-page-view hidden">
+                    
+                    <div class="section-top-toolbar">
+                        <div class="st-left">
+                            <div class="search-input-pill">
+                                <span>🔍</span>
+                                <input type="search" id="tx-search-input" placeholder="Cari No. Invoice atau nama pelanggan...">
+                            </div>
+
+                            <select id="tx-filter-payment" class="custom-select select-pill">
+                                <option value="Semua">Semua Metode Pembayaran</option>
+                                <option value="Tunai">💵 Tunai (Cash)</option>
+                                <option value="QRIS">📱 QRIS</option>
+                                <option value="Transfer">🏦 Transfer Bank</option>
+                                <option value="Kasbon">📝 Kasbon / Hutang</option>
+                            </select>
+
+                            <input type="date" id="tx-filter-date" class="custom-input-date select-pill">
+                            <button type="button" id="tx-reset-filter" class="btn btn-sm btn-ghost">Reset Filter</button>
+                        </div>
+
+                        <div class="st-right">
+                            <button type="button" id="btn-export-tx-csv" class="btn btn-outline-blue">
+                                <span>📥 Export Laporan (CSV)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Summary Cards -->
+                    <div class="tx-summary-bar">
+                        <div class="tx-sum-item">
+                            <span>Total Omzet Penjualan</span>
+                            <strong id="tx-sum-total-omzet">Rp 0</strong>
+                        </div>
+                        <div class="tx-sum-item">
+                            <span>Total Transaksi</span>
+                            <strong id="tx-sum-total-count">0 Transaksi</strong>
+                        </div>
+                        <div class="tx-sum-item">
+                            <span>Rata-rata per Transaksi</span>
+                            <strong id="tx-sum-average">Rp 0</strong>
+                        </div>
+                    </div>
+
+                    <!-- Transactions Table Card -->
+                    <div class="card-panel table-panel">
+                        <div class="table-responsive">
+                            <table class="custom-table" id="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th>No. Invoice</th>
+                                        <th>Tanggal & Waktu</th>
+                                        <th>Pelanggan</th>
+                                        <th>Rincian Menu</th>
+                                        <th>Metode Bayar</th>
+                                        <th>Total Bayar</th>
+                                        <th>Kasir</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="transactions-tbody">
+                                    <!-- Rendered dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- MODALS & POPUPS                                                -->
+    <!-- ============================================================== -->
+
+    <!-- 6. MODAL MASUKKAN JUMLAH PRODUK & CATATAN                      -->
+    <div id="modal-product-qty" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card modal-md animate-scale-up">
+            <div class="modal-header">
+                <div>
+                    <h3 id="mpq-title">Masukkan Jumlah Produk</h3>
+                    <p class="modal-subtitle" id="mpq-product-name">Nama Produk</p>
+                </div>
+                <button type="button" class="modal-close-btn" data-close-modal="modal-product-qty">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="mpq-preview-card">
+                    <img id="mpq-image" src="images/bakso.jpg" alt="Menu" class="mpq-img">
+                    <div class="mpq-info">
+                        <div class="mpq-price" id="mpq-unit-price">Rp 15.000</div>
+                        <div class="mpq-stock-badge" id="mpq-stock-info">Tersedia: 25 Porsi</div>
+                    </div>
+                </div>
+
+                <div class="form-group text-center">
+                    <label>Tentukan Jumlah Pesanan</label>
+                    <div class="qty-stepper-large">
+                        <button type="button" id="mpq-btn-minus" class="btn-stepper-lg">-</button>
+                        <input type="number" id="mpq-qty-input" value="1" min="1" max="999" class="qty-input-lg">
+                        <button type="button" id="mpq-btn-plus" class="btn-stepper-lg">+</button>
+                    </div>
+                    <small id="mpq-stock-warning" class="text-danger hidden">Jumlah melebihi stok yang tersedia!</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="mpq-item-notes">Catatan Khusus Pesanan (Opsional)</label>
+                    <input type="text" id="mpq-item-notes" placeholder="Contoh: Pedas level 3, jangan pakai seledri, kuah dipisah">
+                </div>
+
+                <div class="mpq-subtotal-row">
+                    <span>Subtotal Menu:</span>
+                    <strong id="mpq-subtotal-price">Rp 15.000</strong>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal="modal-product-qty">Batal</button>
+                <button type="button" id="mpq-btn-add-to-cart" class="btn btn-primary-gradient">
+                    🛒 Tambahkan ke Keranjang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9, 10, 11. MODAL PROSES & KONFIRMASI PEMBAYARAN                 -->
+    <div id="modal-payment" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card modal-lg animate-scale-up">
+            <div class="modal-header">
+                <div>
+                    <h3>Proses Pembayaran</h3>
+                    <p class="modal-subtitle">Pilih metode pembayaran dan konfirmasi nominal pembayaran.</p>
+                </div>
+                <button type="button" class="modal-close-btn" data-close-modal="modal-payment">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="payment-modal-grid">
+                    
+                    <!-- Left: Invoice Breakdown -->
+                    <div class="pmg-summary-col">
+                        <div class="summary-box">
+                            <span class="sb-label">TOTAL TAGIHAN</span>
+                            <div class="sb-amount" id="pay-modal-total-display">Rp 0</div>
+                            <div class="sb-customer">
+                                <span>Pelanggan:</span>
+                                <strong id="pay-modal-customer-name">Pelanggan Umum</strong>
+                            </div>
+                        </div>
+
+                        <div class="pay-items-mini-list" id="pay-modal-items-list">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Payment Method Selector & Cash Calculator -->
+                    <div class="pmg-method-col">
+                        
+                        <!-- 9. Pilih Metode Pembayaran -->
+                        <div class="payment-methods-selector">
+                            <label class="pm-tile active" data-method="Tunai">
+                                <input type="radio" name="payment_method_radio" value="Tunai" checked>
+                                <span class="pm-icon">💵</span>
+                                <div class="pm-text">
+                                    <strong>Tunai (Cash)</strong>
+                                    <small>Uang fisik & kembalian</small>
+                                </div>
+                            </label>
+
+                            <label class="pm-tile" data-method="QRIS">
+                                <input type="radio" name="payment_method_radio" value="QRIS">
+                                <span class="pm-icon">📱</span>
+                                <div class="pm-text">
+                                    <strong>QRIS</strong>
+                                    <small>BCA, GoPay, OVO, Dana</small>
+                                </div>
+                            </label>
+
+                            <label class="pm-tile" data-method="Transfer">
+                                <input type="radio" name="payment_method_radio" value="Transfer">
+                                <span class="pm-icon">🏦</span>
+                                <div class="pm-text">
+                                    <strong>Transfer Bank</strong>
+                                    <small>BCA, BRI, Mandiri</small>
+                                </div>
+                            </label>
+
+                            <label class="pm-tile" data-method="Kasbon">
+                                <input type="radio" name="payment_method_radio" value="Kasbon">
+                                <span class="pm-icon">📝</span>
+                                <div class="pm-text">
+                                    <strong>Kasbon / Hutang</strong>
+                                    <small>Catat piutang pelanggan</small>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Method Section: TUNAI -->
+                        <div id="method-section-tunai" class="method-detail-view">
+                            <div class="form-group">
+                                <label for="input-cash-received">Nominal Uang Diterima (Rp)</label>
+                                <div class="input-with-icon input-lg">
+                                    <span class="input-icon">💵</span>
+                                    <input 
+                                        type="number" 
+                                        id="input-cash-received" 
+                                        placeholder="0" 
+                                        min="0" 
+                                        step="500" 
+                                        autocomplete="off"
+                                    >
+                                </div>
+                            </div>
+
+                            <!-- Quick Cash Buttons -->
+                            <div class="quick-cash-chips" id="quick-cash-buttons">
+                                <button type="button" class="btn-cash-chip" id="btn-cash-pas">Uang Pas</button>
+                                <button type="button" class="btn-cash-chip" data-amount="10000">Rp 10.000</button>
+                                <button type="button" class="btn-cash-chip" data-amount="20000">Rp 20.000</button>
+                                <button type="button" class="btn-cash-chip" data-amount="50000">Rp 50.000</button>
+                                <button type="button" class="btn-cash-chip" data-amount="100000">Rp 100.000</button>
+                            </div>
+
+                            <!-- Realtime Kembalian Result -->
+                            <div class="change-calculation-card" id="change-card">
+                                <div class="ccc-row">
+                                    <span id="change-status-label">Kembalian:</span>
+                                    <strong id="change-amount-display">Rp 0</strong>
+                                </div>
+                                <div id="change-alert-message" class="change-alert-msg hidden">
+                                    ⚠️ Uang yang diterima masih kurang!
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Method Section: QRIS -->
+                        <div id="method-section-qris" class="method-detail-view hidden">
+                            <div class="qris-presentation-box">
+                                <div class="qris-badge-tag">QRIS RESMI WARUNG HANISA</div>
+                                <div class="qris-qr-image-wrapper">
+                                    <img 
+                                        src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=WARUNG-HANISA-PAYMENT" 
+                                        alt="QRIS Warung Hanisa" 
+                                        class="qris-qr-img"
+                                    >
+                                </div>
+                                <div class="qris-instructions">
+                                    <strong>Silakan Scan QRIS di atas</strong>
+                                    <p>Pelanggan dapat membayar via GoPay, OVO, Dana, BCA Mobile, atau aplikasi bank lainnya.</p>
+                                </div>
+                                <div class="qris-amount-chip">
+                                    Total: <b id="qris-amount-display">Rp 0</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Method Section: TRANSFER -->
+                        <div id="method-section-transfer" class="method-detail-view hidden">
+                            <div class="transfer-accounts-list">
+                                <div class="ta-card">
+                                    <div class="ta-bank">🏦 Bank Central Asia (BCA)</div>
+                                    <div class="ta-number"><b>8935-1234-5678</b></div>
+                                    <div class="ta-name">a.n. Hanisa Salsabila</div>
+                                </div>
+                                <div class="ta-card">
+                                    <div class="ta-bank">🏦 Bank Rakyat Indonesia (BRI)</div>
+                                    <div class="ta-number"><b>0123-01-098765-50-1</b></div>
+                                    <div class="ta-name">a.n. Hanisa Salsabila</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Method Section: KASBON -->
+                        <div id="method-section-kasbon" class="method-detail-view hidden">
+                            <div class="kasbon-notice-box">
+                                <span class="kn-icon">📝</span>
+                                <div>
+                                    <strong>Pencatatan Kasbon Pelanggan</strong>
+                                    <p id="kasbon-target-customer">Transaksi ini akan dicatat sebagai piutang atas nama pelanggan.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- 11. Konfirmasi Pembayaran -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal="modal-payment">Batal</button>
+                <button type="button" id="btn-confirm-payment" class="btn btn-primary-gradient btn-lg">
+                    <span>✅ Konfirmasi & Selesaikan Pembayaran</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 12. NOTIFIKASI PEMBAYARAN BERHASIL & CETAK STRUK THERMAL      -->
+    <div id="modal-success-receipt" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card modal-md animate-bounce-in">
+            <div class="success-top-celebration">
+                <div class="success-animated-icon">
+                    <span>✓</span>
+                </div>
+                <h2>Pembayaran Berhasil! 🎉</h2>
+                <p>Transaksi telah sukses diproses dan stok produk telah diperbarui secara otomatis.</p>
+            </div>
+
+            <div class="modal-body no-padding">
+                
+                <!-- Thermal Receipt Struk Preview -->
+                <div class="thermal-receipt-preview" id="thermal-receipt-container">
+                    <div class="receipt-header">
+                        <h3 class="receipt-store-title">WARUNG HANISA</h3>
+                        <p class="receipt-store-sub">Sistem Kasir & Manajemen</p>
+                        <p class="receipt-store-address">Jl. Pemuda No. 18, Depan Kampus</p>
+                        <p class="receipt-store-phone">Telp/WA: 0812-3456-7890</p>
+                    </div>
+
+                    <div class="receipt-dashed-line"></div>
+
+                    <div class="receipt-meta-info">
+                        <div>
+                            <span>No: <b id="rec-invoice-id">INV-20261001-0001</b></span>
+                            <span id="rec-datetime">01/10/2026 19:25 WIB</span>
+                        </div>
+                        <div>
+                            <span>Kasir: <b id="rec-cashier-name">Hanisa</b></span>
+                            <span>Pelanggan: <b id="rec-customer-name">Pelanggan Umum</b></span>
+                        </div>
+                    </div>
+
+                    <div class="receipt-dashed-line"></div>
+
+                    <!-- Items Table in Receipt -->
+                    <div class="receipt-items-table" id="rec-items-list">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <div class="receipt-dashed-line"></div>
+
+                    <div class="receipt-totals-table">
+                        <div class="rec-total-row">
+                            <span>Subtotal:</span>
+                            <span id="rec-subtotal">Rp 0</span>
+                        </div>
+                        <div class="rec-total-row" id="rec-discount-row">
+                            <span>Diskon:</span>
+                            <span id="rec-discount">- Rp 0</span>
+                        </div>
+                        <div class="rec-total-row rec-grand-total">
+                            <span>TOTAL:</span>
+                            <span id="rec-grand-total">Rp 0</span>
+                        </div>
+                        <div class="rec-total-row">
+                            <span id="rec-method-label">Tunai (Diterima):</span>
+                            <span id="rec-cash-received">Rp 0</span>
+                        </div>
+                        <div class="rec-total-row">
+                            <span>Kembalian:</span>
+                            <span id="rec-change">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div class="receipt-dashed-line"></div>
+
+                    <div class="receipt-footer">
+                        <p>Terima Kasih Atas Kunjungan Anda!</p>
+                        <p>Semoga Berkah & Selamat Menikmati 🍜🍹</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer receipt-actions-footer">
+                <button type="button" id="btn-print-receipt" class="btn btn-outline-blue">
+                    🖨️ Cetak Struk
+                </button>
+                <button type="button" id="btn-share-whatsapp" class="btn btn-outline-pink">
+                    💬 Kirim WhatsApp
+                </button>
+                <button type="button" id="btn-new-transaction" class="btn btn-primary-gradient">
+                    ✨ Transaksi Baru
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL TAMBAH / EDIT PRODUK                                     -->
+    <div id="modal-product-form" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card modal-md animate-scale-up">
+            <div class="modal-header">
+                <div>
+                    <h3 id="product-modal-title">Tambah Produk Menu Baru</h3>
+                    <p class="modal-subtitle">Lengkapi detail produk, harga modal, harga jual, dan stok awal.</p>
+                </div>
+                <button type="button" class="modal-close-btn" data-close-modal="modal-product-form">&times;</button>
+            </div>
+
+            <form id="product-crud-form">
+                <input type="hidden" id="form-product-id">
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="form-product-name">Nama Produk Menu</label>
+                        <input type="text" id="form-product-name" placeholder="Contoh: Nasi Goreng Spesial" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="form-product-category">Kategori</label>
+                            <select id="form-product-category" class="custom-select" required>
+                                <option value="Makanan">Makanan</option>
+                                <option value="Minuman">Minuman</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-product-unit">Satuan</label>
+                            <input type="text" id="form-product-unit" placeholder="Porsi / Gelas / Bungkus" value="Porsi" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="form-product-cost">Harga Modal (Beli) Rp</label>
+                            <input type="number" id="form-product-cost" placeholder="0" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="form-product-price">Harga Jual (Kasir) Rp</label>
+                            <input type="number" id="form-product-price" placeholder="0" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-product-stock">Jumlah Stok</label>
+                        <input type="number" id="form-product-stock" placeholder="0" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-product-image">Gambar / Foto Produk (Pilih atau Masukkan Link)</label>
+                        <select id="form-product-image-select" class="custom-select mb-2">
+                            <option value="images/bakso.jpg">🍜 Bakso Sapi Spesial (images/bakso.jpg)</option>
+                            <option value="images/soto.jpg">🍲 Soto Ayam Komplit (images/soto.jpg)</option>
+                            <option value="images/mie-ayam-biasa.jpg">🥢 Mie Ayam Biasa (images/mie-ayam-biasa.jpg)</option>
+                            <option value="images/mie-ayam-pentol.jpg">🍜 Mie Ayam Pentol (images/mie-ayam-pentol.jpg)</option>
+                            <option value="images/teh.jpg">🍹 Es Teh Manis (images/teh.jpg)</option>
+                            <option value="images/jeruk.jpg">🍊 Es Jeruk Peras (images/jeruk.jpg)</option>
+                            <option value="images/sirup-susu.jpg">🍧 Sirup Susu Manis (images/sirup-susu.jpg)</option>
+                            <option value="images/air-es.jpg">🧊 Air Es Kristal (images/air-es.jpg)</option>
+                            <option value="custom">🌐 URL Gambar Kustom...</option>
+                        </select>
+                        <input type="url" id="form-product-custom-image" class="hidden" placeholder="https://example.com/foto-menu.jpg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="form-product-desc">Deskripsi Singkat (Opsional)</label>
+                        <input type="text" id="form-product-desc" placeholder="Keterangan rasa atau porsi">
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="modal-product-form">Batal</button>
+                    <button type="submit" class="btn btn-primary-gradient">💾 Simpan Data Produk</button>
+                </div>
             </form>
-        </section>
+        </div>
+    </div>
 
-    </main>
+    <!-- MODAL TAMBAH / EDIT PELANGGAN                                   -->
+    <div id="modal-customer-form" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card modal-md animate-scale-up">
+            <div class="modal-header">
+                <div>
+                    <h3 id="customer-modal-title">Tambah Pelanggan Baru</h3>
+                    <p class="modal-subtitle">Simpan nomor telepon/WhatsApp pelanggan untuk riwayat dan struk.</p>
+                </div>
+                <button type="button" class="modal-close-btn" data-close-modal="modal-customer-form">&times;</button>
+            </div>
 
-    <footer style="text-align: center; padding-top: 2rem;">
-        <p>&copy; 2026 Warung Makan Hanisa</p>
-    </footer>
+            <form id="customer-crud-form">
+                <input type="hidden" id="form-customer-id">
 
-    <!-- SCRIPT JAVASCRIPT FINAL DENGAN HARGA TERBARU -->
-    <script>
-        const inventarisWarung = [
-            { id: 1, nama: "Mie Ayam Biasa", kategori: "Makanan", harga: 20000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 2, nama: "Mie Ayam Bakso / Pentol", kategori: "Makanan", harga: 22000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 3, nama: "Bakso", kategori: "Makanan", harga: 18000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 4, nama: "Soto", kategori: "Makanan", harga: 20000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 5, nama: "Es Teh", kategori: "Minuman", harga: 5000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 6, nama: "Es Sirup", kategori: "Minuman", harga: 5000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 7, nama: "Es Jeruk", kategori: "Minuman", harga: 6000, tersedia: true, lokasi: "Jl. Bangsal Tengah" },
-            { id: 8, nama: "Air Es", kategori: "Minuman", harga: 2000, tersedia: true, lokasi: "Jl. Bangsal Tengah" }
-        ];
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="form-customer-name">Nama Pelanggan</label>
+                        <input type="text" id="form-customer-name" placeholder="Contoh: Mas Agus" required>
+                    </div>
 
-        const menuContainer = document.getElementById('menu-container');
+                    <div class="form-group">
+                        <label for="form-customer-phone">No. WhatsApp / HP</label>
+                        <input type="tel" id="form-customer-phone" placeholder="Contoh: 081234567890">
+                    </div>
 
-        function renderItems(dataArray) {
-            if (!menuContainer) return;
-            
-            menuContainer.innerHTML = '';
-            menuContainer.style.display = 'grid';
-            menuContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
-            menuContainer.style.gap = '1.5rem';
-            menuContainer.style.marginBottom = '3rem';
+                    <div class="form-group">
+                        <label for="form-customer-address">Alamat / Meja / Keterangan</label>
+                        <input type="text" id="form-customer-address" placeholder="Contoh: Meja 4 / Depan Kasir">
+                    </div>
 
-            dataArray.forEach(item => {
-                const card = document.createElement('article');
-                card.style.backgroundColor = 'var(--surface, #fff)';
-                card.style.padding = '1rem';
-                card.style.border = '1px solid #ddd';
-                card.style.borderRadius = '8px';
-                card.style.textAlign = 'center';
-                card.style.display = 'flex';
-                card.style.flexDirection = 'column';
+                    <div class="form-group">
+                        <label for="form-customer-notes">Catatan Tambahan (Opsional)</label>
+                        <input type="text" id="form-customer-notes" placeholder="Contoh: Pelanggan setia / suka pesan pedas">
+                    </div>
+                </div>
 
-                const title = document.createElement('h3');
-                title.textContent = item.nama;
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-close-modal="modal-customer-form">Batal</button>
+                    <button type="submit" class="btn btn-pink-gradient">💾 Simpan Pelanggan</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-                const desc = document.createElement('p');
-                desc.textContent = `${item.kategori} - Rp ${item.harga.toLocaleString('id-ID')}`;
+    <!-- MODAL RESTOCK CEPAT PRODUK                                      -->
+    <div id="modal-quick-restock" class="modal-overlay hidden" role="dialog" aria-modal="true">
+        <div class="modal-card modal-sm animate-scale-up">
+            <div class="modal-header">
+                <div>
+                    <h3>Tambah Stok Cepat</h3>
+                    <p class="modal-subtitle" id="restock-product-name">Bakso Sapi</p>
+                </div>
+                <button type="button" class="modal-close-btn" data-close-modal="modal-quick-restock">&times;</button>
+            </div>
 
-                card.append(title, desc);
-                menuContainer.append(card);
-            });
-        }
+            <div class="modal-body">
+                <div class="current-stock-info">
+                    <span>Stok Saat Ini:</span>
+                    <strong id="restock-current-stock">10 Porsi</strong>
+                </div>
 
-        // Render pertama kali saat halaman dimuat
-        renderItems(inventarisWarung);
+                <div class="form-group mt-3">
+                    <label for="input-restock-qty">Jumlah Tambahan Stok</label>
+                    <div class="qty-stepper-large">
+                        <button type="button" id="btn-restock-minus" class="btn-stepper-lg">-</button>
+                        <input type="number" id="input-restock-qty" value="10" min="1" class="qty-input-lg">
+                        <button type="button" id="btn-restock-plus" class="btn-stepper-lg">+</button>
+                    </div>
+                </div>
 
-        // Event listener untuk tombol filter
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        filterButtons.forEach(button => {
-            button.addEventListener('click', (e) => {
-                const kategoriFilter = e.currentTarget.getAttribute('data-filter');
-                if (kategoriFilter === 'all') {
-                    renderItems(inventarisWarung);
-                } else {
-                    const filteredData = inventarisWarung.filter(item => item.kategori === kategoriFilter);
-                    renderItems(filteredData);
-                }
-            });
-        });
+                <div class="quick-add-chips">
+                    <button type="button" class="btn-chip" data-add="5">+5</button>
+                    <button type="button" class="btn-chip" data-add="10">+10</button>
+                    <button type="button" class="btn-chip" data-add="20">+20</button>
+                    <button type="button" class="btn-chip" data-add="50">+50</button>
+                </div>
+            </div>
 
-        // Event listener untuk tombol ubah tampilan (Grid/List)
-        const prefButton = document.getElementById('pref-btn');
-        if (prefButton) {
-            prefButton.addEventListener('click', () => {
-                let currentView = localStorage.getItem('cardView') || 'grid';
-                if (currentView === 'grid') {
-                    currentView = 'list';
-                    if (menuContainer) menuContainer.style.gridTemplateColumns = '1fr';
-                } else {
-                    currentView = 'grid';
-                    if (menuContainer) menuContainer.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
-                }
-                localStorage.setItem('cardView', currentView);
-            });
-        }
-    </script>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-close-modal="modal-quick-restock">Batal</button>
+                <button type="button" id="btn-save-quick-restock" class="btn btn-primary-gradient">Simpan Stok Baru</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript Modules -->
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>
