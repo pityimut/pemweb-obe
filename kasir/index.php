@@ -37,6 +37,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="pos-toolbar">
             <div class="pos-search-box">
                 <span class="pos-search-icon">🔍</span>
+                <label for="posSearchInput" class="visually-hidden">Cari Menu Makanan atau Minuman</label>
                 <input type="text" id="posSearchInput" class="pos-search-input" 
                        placeholder="Cari menu makanan atau minuman..." autocomplete="off">
             </div>
@@ -144,7 +145,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <span class="total-amount" id="summaryTotalAmount">Rp0</span>
             </div>
 
-            <button type="button" class="btn btn-primary btn-checkout" id="btnOpenCheckout" disabled onclick="openCheckoutModal()">
+            <button type="button" class="btn btn-primary btn-checkout" id="btnOpenCheckout" onclick="openCheckoutModal()">
                 Lanjut ke Pembayaran ➔
             </button>
         </div>
@@ -185,88 +186,151 @@ require_once __DIR__ . '/../includes/header.php';
 <!-- ==========================================================
      MODAL 2: PEMBAYARAN (CASH / QRIS)
      ========================================================== -->
-<div class="modal-overlay" id="modalPembayaran">
+<div class="modal-overlay" id="modalPembayaran" role="dialog" aria-modal="true" aria-labelledby="modalPembayaranTitle">
     <div class="modal-box" style="max-width: 520px;">
-        <div class="modal-header">
-            <h3>Proses Pembayaran</h3>
-            <button type="button" class="modal-close-btn" onclick="closeModal('modalPembayaran')">&times;</button>
-        </div>
-        <div class="modal-body">
-            <!-- Total Banner -->
-            <div style="background: linear-gradient(135deg, var(--primary-dark), #5D4037); color: #fff; padding: 1.25rem; border-radius: var(--radius-md); text-align: center; margin-bottom: 1.5rem;">
-                <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-light);">Total Pembayaran</div>
-                <div style="font-size: 2rem; font-weight: 800; font-family: 'Outfit', sans-serif; color: #fff;" id="modalTotalTagihan">
-                    Rp0
-                </div>
+        <form id="formTransaksi" novalidate onsubmit="event.preventDefault(); submitTransaction();">
+            <div class="modal-header">
+                <h3 id="modalPembayaranTitle">Proses Pembayaran</h3>
+                <button type="button" class="modal-close-btn" onclick="closeModal('modalPembayaran')" aria-label="Tutup dialog pembayaran">&times;</button>
             </div>
-
-            <!-- Tab Metode Pembayaran -->
-            <div class="payment-methods-grid">
-                <div class="payment-method-card active" id="tabCash" onclick="switchPaymentMethod('cash')">
-                    <span style="font-size: 1.3rem;">💵</span>
-                    <span>Tunai (Cash)</span>
+            <div class="modal-body">
+                <!-- ================= ERROR SUMMARY (A11Y) ================= -->
+                <div
+                    id="form-errors"
+                    class="error-summary"
+                    role="alert"
+                    aria-live="polite"
+                    hidden>
                 </div>
-                <div class="payment-method-card" id="tabQris" onclick="switchPaymentMethod('qris')">
-                    <span style="font-size: 1.3rem;">📱</span>
-                    <span>QRIS Digital</span>
-                </div>
-            </div>
 
-            <!-- FORM CASH -->
-            <div id="sectionCash">
+                <!-- Field 1: Tanggal Transaksi -->
                 <div class="form-group">
-                    <label class="form-label" for="inputNominalCash">Nominal Uang Diterima (Rp)</label>
-                    <input type="number" id="inputNominalCash" class="form-control" style="font-size: 1.2rem; font-weight: 700; font-family: 'Outfit';"
-                           placeholder="0" min="0" step="500" oninput="calculateKembalian()">
-                    
-                    <!-- Quick Cash Buttons -->
-                    <div class="quick-cash-grid">
-                        <button type="button" class="quick-cash-btn" onclick="setExactCash()">Uang Pas</button>
-                        <button type="button" class="quick-cash-btn" onclick="addCash(20000)">+20 rb</button>
-                        <button type="button" class="quick-cash-btn" onclick="addCash(50000)">+50 rb</button>
-                        <button type="button" class="quick-cash-btn" onclick="setCashAmount(100000)">100 rb</button>
+                    <label class="form-label" for="tanggal">Tanggal Transaksi <span style="color: var(--status-danger);">*</span></label>
+                    <input 
+                        type="date" 
+                        id="tanggal" 
+                        name="tanggal" 
+                        class="form-control" 
+                        value="<?= date('Y-m-d') ?>"
+                        aria-describedby="tanggal-error"
+                        required
+                    >
+                    <small id="tanggal-error" class="error-message"></small>
+                </div>
+
+                <!-- Total Banner & Ringkasan Pesanan -->
+                <div style="background: linear-gradient(135deg, var(--primary-dark), #5D4037); color: #fff; padding: 1.25rem; border-radius: var(--radius-md); text-align: center; margin-bottom: 1.25rem;">
+                    <div style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent-light);">Total Pembayaran</div>
+                    <div style="font-size: 2rem; font-weight: 800; font-family: 'Outfit', sans-serif; color: #fff;" id="modalTotalTagihan">
+                        Rp0
+                    </div>
+                    <div id="modalItemsSummary" style="font-size: 0.85rem; color: #EFEBE9; margin-top: 0.25rem;">
+                        0 pesanan
                     </div>
                 </div>
 
-                <!-- Indikator Kembalian / Status Uang Kurang -->
-                <div id="cashFeedbackBox" style="margin-bottom: 1.25rem; padding: 0.85rem 1rem; border-radius: var(--radius-md); background: #FAF6F0; border: 1px solid var(--border-color);">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-weight: 600; font-size: 0.9rem;" id="cashFeedbackLabel">Kembalian:</span>
-                        <span style="font-size: 1.3rem; font-weight: 800; font-family: 'Outfit';" id="cashKembalianAmount">Rp0</span>
+                <!-- Field 2: Jumlah Pesanan (Validasi Pesanan dari Keranjang) -->
+                <div class="form-group" style="margin-top: -0.5rem; margin-bottom: 1rem;">
+                    <input type="hidden" id="inputJumlahPesanan" name="jumlah" value="0" aria-describedby="jumlah-error">
+                    <small id="jumlah-error" class="error-message"></small>
+                </div>
+
+                <!-- Field 3: Metode Pembayaran -->
+                <fieldset class="payment-fieldset">
+                    <legend class="form-label" id="labelMetodePembayaran">Metode Pembayaran <span style="color: var(--status-danger);">*</span></legend>
+                    <div class="payment-methods-grid" role="radiogroup" aria-labelledby="labelMetodePembayaran" aria-describedby="metode-error">
+                        <label class="payment-method-card active" id="tabCash" for="metodeCash" onclick="switchPaymentMethod('cash')">
+                            <input 
+                                type="radio" 
+                                id="metodeCash" 
+                                name="metode_pembayaran" 
+                                value="cash" 
+                                checked 
+                                class="sr-only-method" 
+                                onchange="switchPaymentMethod('cash')"
+                                aria-describedby="metode-error"
+                            >
+                            <span style="font-size: 1.3rem;">💵</span>
+                            <span>Tunai (Cash)</span>
+                        </label>
+                        <label class="payment-method-card" id="tabQris" for="metodeQris" onclick="switchPaymentMethod('qris')">
+                            <input 
+                                type="radio" 
+                                id="metodeQris" 
+                                name="metode_pembayaran" 
+                                value="qris" 
+                                class="sr-only-method" 
+                                onchange="switchPaymentMethod('qris')"
+                                aria-describedby="metode-error"
+                            >
+                            <span style="font-size: 1.3rem;">📱</span>
+                            <span>QRIS Digital</span>
+                        </label>
                     </div>
-                    <div id="cashUnderpaidNotice" style="display: none; color: var(--status-danger); font-size: 0.82rem; font-weight: 700; margin-top: 0.35rem;">
-                        ⚠️ Nominal pembayaran kurang!
+                    <small id="metode-error" class="error-message"></small>
+                </fieldset>
+
+                <!-- Field 4: FORM CASH -->
+                <div id="sectionCash">
+                    <div class="form-group">
+                        <label class="form-label" for="inputNominalCash">Nominal Uang Diterima (Rp) <span style="color: var(--status-danger);">*</span></label>
+                        <input type="number" id="inputNominalCash" name="nominal_cash" class="form-control" style="font-size: 1.2rem; font-weight: 700; font-family: 'Outfit';"
+                               placeholder="0" min="0" step="500" oninput="calculateKembalian()"
+                               aria-describedby="nominal-error">
+                        <small id="nominal-error" class="error-message"></small>
+                        
+                        <!-- Quick Cash Buttons -->
+                        <div class="quick-cash-grid">
+                            <button type="button" class="quick-cash-btn" onclick="setExactCash()">Uang Pas</button>
+                            <button type="button" class="quick-cash-btn" onclick="addCash(20000)">+20 rb</button>
+                            <button type="button" class="quick-cash-btn" onclick="addCash(50000)">+50 rb</button>
+                            <button type="button" class="quick-cash-btn" onclick="setCashAmount(100000)">100 rb</button>
+                        </div>
                     </div>
+
+                    <!-- Indikator Kembalian / Status Uang Kurang -->
+                    <div id="cashFeedbackBox" style="margin-bottom: 1.25rem; padding: 0.85rem 1rem; border-radius: var(--radius-md); background: #FAF6F0; border: 1px solid var(--border-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <span style="font-weight: 600; font-size: 0.9rem;" id="cashFeedbackLabel">Kembalian:</span>
+                            <span style="font-size: 1.3rem; font-weight: 800; font-family: 'Outfit';" id="cashKembalianAmount">Rp0</span>
+                        </div>
+                        <div id="cashUnderpaidNotice" style="display: none; color: var(--status-danger); font-size: 0.82rem; font-weight: 700; margin-top: 0.35rem;">
+                            ⚠️ Nominal pembayaran kurang!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION QRIS -->
+                <div id="sectionQris" style="display: none;">
+                    <div class="qris-display-card">
+                        <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">
+                            WARUNG MAKAN HANISA - QRIS
+                        </div>
+                        <img src="<?= BASE_URL ?>assets/images/qris.png" alt="QRIS Warung Hanisa" id="qrisImageModal"
+                             style="max-width: 230px;">
+                        <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4;">
+                            Scan QR Code untuk melakukan pembayaran dengan aplikasi e-Wallet atau Mobile Banking apa pun.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Field 5: Catatan Pesanan Opsional -->
+                <div class="form-group" style="margin-top: 0.5rem;">
+                    <label class="form-label" for="inputCatatanPesanan">Catatan Pesanan (Opsional)</label>
+                    <input type="text" id="inputCatatanPesanan" name="catatan" class="form-control" 
+                           placeholder="Misal: Dibungkus, kuah dipisah, dsb."
+                           aria-describedby="catatan-error">
+                    <small id="catatan-error" class="error-message"></small>
                 </div>
             </div>
 
-            <!-- SECTION QRIS -->
-            <div id="sectionQris" style="display: none;">
-                <div class="qris-display-card">
-                    <div style="font-size: 0.85rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">
-                        WARUNG MAKAN HANISA - QRIS
-                    </div>
-                    <img src="<?= BASE_URL ?>assets/images/qris.png" alt="QRIS Warung Hanisa" id="qrisImageModal"
-                         style="max-width: 230px;">
-                    <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4;">
-                        Scan QR Code untuk melakukan pembayaran dengan aplikasi e-Wallet atau Mobile Banking apa pun.
-                    </div>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeModal('modalPembayaran')">Batal</button>
+                <button type="submit" class="btn btn-primary btn-lg" id="btnSubmitPayment">
+                    Bayar Sekarang
+                </button>
             </div>
-
-            <!-- Catatan Pesanan Opsional -->
-            <div class="form-group" style="margin-top: 0.5rem;">
-                <label class="form-label" for="inputCatatanPesanan">Catatan Pesanan (Opsional)</label>
-                <input type="text" id="inputCatatanPesanan" class="form-control" placeholder="Misal: Dibungkus, kuah dipisah, dsb.">
-            </div>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeModal('modalPembayaran')">Batal</button>
-            <button type="button" class="btn btn-primary btn-lg" id="btnSubmitPayment" onclick="submitTransaction()">
-                Bayar Sekarang
-            </button>
-        </div>
+        </form>
     </div>
 </div>
 
@@ -504,7 +568,7 @@ function renderCart() {
         clearBtn.style.display = 'none';
         totalQtyEl.innerText = '0 porsi';
         totalAmountEl.innerText = formatRupiah(0);
-        checkoutBtn.disabled = true;
+        checkoutBtn.disabled = false;
         return;
     }
 
@@ -552,15 +616,28 @@ function renderCart() {
 
 // 8. Pembayaran & Checkout Flow
 function openCheckoutModal() {
-    if (cart.length === 0) return;
-    
     const grandTotal = cart.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
+    const totalQty = cart.reduce((sum, item) => sum + item.jumlah, 0);
     document.getElementById('modalTotalTagihan').innerText = formatRupiah(grandTotal);
     
+    const summaryTextEl = document.getElementById('modalItemsSummary');
+    if (summaryTextEl) {
+        summaryTextEl.innerText = totalQty + ' item (' + cart.length + ' menu)';
+    }
+    const inputJumlahEl = document.getElementById('inputJumlahPesanan');
+    if (inputJumlahEl) {
+        inputJumlahEl.value = totalQty;
+    }
+
     // Default to Cash
     switchPaymentMethod('cash');
     document.getElementById('inputNominalCash').value = '';
     calculateKembalian();
+
+    // Reset error tampilan lama saat membuka modal
+    if (typeof renderErrors === 'function') {
+        renderErrors({});
+    }
 
     openModal('modalPembayaran');
 }
@@ -572,21 +649,27 @@ function switchPaymentMethod(method) {
     const sectionCash = document.getElementById('sectionCash');
     const sectionQris = document.getElementById('sectionQris');
     const submitBtn = document.getElementById('btnSubmitPayment');
+    const radioCash = document.getElementById('metodeCash');
+    const radioQris = document.getElementById('metodeQris');
 
     if (method === 'cash') {
-        tabCash.classList.add('active');
-        tabQris.classList.remove('active');
-        sectionCash.style.display = 'block';
-        sectionQris.style.display = 'none';
-        submitBtn.innerText = 'Bayar Sekarang (Cash)';
+        if (tabCash) tabCash.classList.add('active');
+        if (tabQris) tabQris.classList.remove('active');
+        if (radioCash) radioCash.checked = true;
+        if (sectionCash) sectionCash.style.display = 'block';
+        if (sectionQris) sectionQris.style.display = 'none';
+        if (submitBtn) submitBtn.innerText = 'Bayar Sekarang (Cash)';
         calculateKembalian();
     } else {
-        tabQris.classList.add('active');
-        tabCash.classList.remove('active');
-        sectionCash.style.display = 'none';
-        sectionQris.style.display = 'block';
-        submitBtn.innerText = 'Saya Sudah Membayar (Konfirmasi QRIS)';
-        submitBtn.disabled = false; // QRIS is confirmed on click
+        if (tabQris) tabQris.classList.add('active');
+        if (tabCash) tabCash.classList.remove('active');
+        if (radioQris) radioQris.checked = true;
+        if (sectionCash) sectionCash.style.display = 'none';
+        if (sectionQris) sectionQris.style.display = 'block';
+        if (submitBtn) {
+            submitBtn.innerText = 'Saya Sudah Membayar (Konfirmasi QRIS)';
+            submitBtn.disabled = false; // QRIS is confirmed on click
+        }
     }
 }
 
@@ -645,6 +728,17 @@ function calculateKembalian() {
 
 // 9. Submit Transaksi ke Backend via AJAX
 async function submitTransaction() {
+    const form = document.getElementById('formTransaksi');
+    if (form && typeof readFormData === 'function' && typeof validate === 'function') {
+        const formData = readFormData(form);
+        const errors = validate(formData);
+        if (Object.keys(errors).length > 0) {
+            if (typeof renderErrors === 'function') renderErrors(errors);
+            return;
+        }
+        if (typeof renderErrors === 'function') renderErrors({});
+    }
+
     if (cart.length === 0) return;
 
     const grandTotal = cart.reduce((sum, item) => sum + (item.harga * item.jumlah), 0);
@@ -653,7 +747,9 @@ async function submitTransaction() {
     if (currentPaymentMethod === 'cash') {
         nominalDiterima = parseFloat(document.getElementById('inputNominalCash').value || 0);
         if (nominalDiterima < grandTotal) {
-            alert('Nominal uang tunai kurang dari total tagihan.');
+            if (typeof renderErrors === 'function') {
+                renderErrors({ nominal: 'Nominal pembayaran tidak boleh kurang dari total transaksi.' });
+            }
             return;
         }
     } else {

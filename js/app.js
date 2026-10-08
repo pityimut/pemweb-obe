@@ -889,6 +889,106 @@ function selectPaymentMethod(method) {
             `Transaksi atas nama ${custName} akan dicatat ke buku piutang / kasbon Warung Hanisa.`;
     }
 }
+// ============================================================
+// PRAKTIKUM 6 - NOMOR 5
+// readFormData, validate, renderErrors
+// ============================================================
+
+function readFormData() {
+    const selectedMethodInput = document.querySelector(
+        'input[name="payment_method_radio"]:checked'
+    );
+
+    const cashInput = document.getElementById("input-cash-received");
+    const totals = calculateCartTotals();
+
+    return {
+        cart: STATE.cart,
+        paymentMethod: selectedMethodInput
+            ? selectedMethodInput.value
+            : "",
+        cashReceived: Number(cashInput?.value) || 0,
+        grandTotal: totals.grandTotal,
+        customer: STATE.selectedCustomer
+    };
+}
+
+function validate(data) {
+    const errors = {};
+    // 1. Keranjang tidak boleh kosong
+    if (!data.cart || data.cart.length === 0) {
+        errors.cart = "Keranjang belanja masih kosong!";
+    }
+    // 2. Metode pembayaran harus valid
+    const validPaymentMethods = [
+        "Tunai",
+        "QRIS",
+    ];
+    if (!validPaymentMethods.includes(data.paymentMethod)) {
+        errors.paymentMethod = "Metode pembayaran harus dipilih.";
+    }
+    // 3. Nominal tunai wajib diisi
+    if (data.paymentMethod === "Tunai" && data.cashReceived <= 0) {
+        errors.cashReceived = "Nominal uang diterima harus diisi.";
+    }
+    // 4. Nominal tunai tidak boleh kurang dari total
+    if (
+        data.paymentMethod === "Tunai" &&
+        data.cashReceived > 0 &&
+        data.cashReceived < data.grandTotal
+    ) {
+        errors.cashReceived =
+            `Uang yang diterima kurang ${formatRupiah(
+                data.grandTotal - data.cashReceived
+            )}.`;
+    }
+    // 5. Jumlah setiap produk harus valid
+    if (data.cart && data.cart.length > 0) {
+        const invalidItem = data.cart.find(
+            item =>
+                !Number.isInteger(Number(item.qty)) ||
+                Number(item.qty) < 1
+        );
+        if (invalidItem) {
+            errors.qty = "Jumlah produk harus minimal 1.";
+        }
+    }
+
+    return errors;
+}
+
+function renderErrors(errors) {
+    // Pesan error nominal pembayaran
+    const cashError = document.getElementById("nominalCashError");
+    if (cashError) {
+        cashError.textContent = errors.cashReceived || "";
+    }
+    // Tandai input nominal jika error
+    const cashInput = document.getElementById("input-cash-received");
+    if (cashInput) {
+        if (errors.cashReceived) {
+            cashInput.classList.add("is-invalid");
+            cashInput.setAttribute("aria-invalid", "true");
+        } else {
+            cashInput.classList.remove("is-invalid");
+            cashInput.setAttribute("aria-invalid", "false");
+        }
+    }
+    // Tampilkan error umum
+    if (errors.cart) {
+        showToast(errors.cart, "warning");
+    }
+    if (errors.paymentMethod) {
+        showToast(errors.paymentMethod, "warning");
+    }
+    if (errors.qty) {
+        showToast(errors.qty, "warning");
+    }
+    if (errors.cashReceived) {
+        showToast(errors.cashReceived, "error");
+    }
+    return Object.keys(errors).length === 0;
+}
 
 function updateCashChange() {
     const totals = calculateCartTotals();
@@ -1927,6 +2027,32 @@ document.querySelectorAll(".cat-pill").forEach(pill => {
 
     // Confirm Payment
     document.getElementById("btn-confirm-payment")?.addEventListener("click", handleConfirmPayment);
+
+    // ============================================================
+// PRAKTIKUM 6 - NOMOR 5
+// Validasi sebelum proses pembayaran
+// ============================================================
+
+const confirmPaymentButton = document.getElementById(
+    "btn-confirm-payment"
+);
+
+if (confirmPaymentButton) {
+    confirmPaymentButton.addEventListener(
+        "click",
+        (e) => {
+            const formData = readFormData();
+            const errors = validate(formData);
+            const isValid = renderErrors(errors);
+
+            if (!isValid) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        },
+        true
+    );
+}
 
     // Receipt Actions
     document.getElementById("btn-print-receipt")?.addEventListener("click", handlePrintReceipt);
