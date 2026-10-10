@@ -188,7 +188,7 @@ require_once __DIR__ . '/../includes/header.php';
      ========================================================== -->
 <div class="modal-overlay" id="modalPembayaran" role="dialog" aria-modal="true" aria-labelledby="modalPembayaranTitle">
     <div class="modal-box" style="max-width: 520px;">
-        <form id="formTransaksi" novalidate onsubmit="event.preventDefault(); submitTransaction();">
+        <form id="formTransaksi" novalidate>
             <div class="modal-header">
                 <h3 id="modalPembayaranTitle">Proses Pembayaran</h3>
                 <button type="button" class="modal-close-btn" onclick="closeModal('modalPembayaran')" aria-label="Tutup dialog pembayaran">&times;</button>
@@ -215,7 +215,39 @@ require_once __DIR__ . '/../includes/header.php';
                         aria-describedby="tanggal-error"
                         required
                     >
-                    <small id="tanggal-error" class="error-message"></small>
+                    <small id="tanggal-error" class="error-message" role="alert"></small>
+                </div>
+
+                <!-- Field 2: Nama Pemesan -->
+                <div class="form-group">
+                    <label class="form-label" for="inputNamaPemesan">Nama Pemesan <span style="color: var(--status-danger);">*</span></label>
+                    <input 
+                        type="text" 
+                        id="inputNamaPemesan" 
+                        name="nama_pemesan" 
+                        class="form-control" 
+                        placeholder="Masukkan nama pelanggan / pemesan (min. 3 karakter)..." 
+                        minlength="3"
+                        aria-describedby="nama-error"
+                        required
+                        autocomplete="name"
+                    >
+                    <small id="nama-error" class="error-message" role="alert"></small>
+                </div>
+
+                <!-- Field 3: Kontak Pemesan (Opsional) -->
+                <div class="form-group">
+                    <label class="form-label" for="inputKontakPemesan">Kontak / No. HP Pemesan (Opsional)</label>
+                    <input 
+                        type="tel" 
+                        id="inputKontakPemesan" 
+                        name="kontak_pemesan" 
+                        class="form-control" 
+                        placeholder="Contoh: 081234567890" 
+                        aria-describedby="kontak-error"
+                        autocomplete="tel"
+                    >
+                    <small id="kontak-error" class="error-message" role="alert"></small>
                 </div>
 
                 <!-- Total Banner & Ringkasan Pesanan -->
@@ -229,13 +261,13 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
 
-                <!-- Field 2: Jumlah Pesanan (Validasi Pesanan dari Keranjang) -->
+                <!-- Field 4: Jumlah Pesanan (Validasi Pesanan dari Keranjang) -->
                 <div class="form-group" style="margin-top: -0.5rem; margin-bottom: 1rem;">
                     <input type="hidden" id="inputJumlahPesanan" name="jumlah" value="0" aria-describedby="jumlah-error">
-                    <small id="jumlah-error" class="error-message"></small>
+                    <small id="jumlah-error" class="error-message" role="alert"></small>
                 </div>
 
-                <!-- Field 3: Metode Pembayaran -->
+                <!-- Field 5: Metode Pembayaran -->
                 <fieldset class="payment-fieldset">
                     <legend class="form-label" id="labelMetodePembayaran">Metode Pembayaran <span style="color: var(--status-danger);">*</span></legend>
                     <div class="payment-methods-grid" role="radiogroup" aria-labelledby="labelMetodePembayaran" aria-describedby="metode-error">
@@ -267,17 +299,17 @@ require_once __DIR__ . '/../includes/header.php';
                             <span>QRIS Digital</span>
                         </label>
                     </div>
-                    <small id="metode-error" class="error-message"></small>
+                    <small id="metode-error" class="error-message" role="alert"></small>
                 </fieldset>
 
-                <!-- Field 4: FORM CASH -->
+                <!-- Field 6: FORM CASH -->
                 <div id="sectionCash">
                     <div class="form-group">
                         <label class="form-label" for="inputNominalCash">Nominal Uang Diterima (Rp) <span style="color: var(--status-danger);">*</span></label>
                         <input type="number" id="inputNominalCash" name="nominal_cash" class="form-control" style="font-size: 1.2rem; font-weight: 700; font-family: 'Outfit';"
                                placeholder="0" min="0" step="500" oninput="calculateKembalian()"
                                aria-describedby="nominal-error">
-                        <small id="nominal-error" class="error-message"></small>
+                        <small id="nominal-error" class="error-message" role="alert"></small>
                         
                         <!-- Quick Cash Buttons -->
                         <div class="quick-cash-grid">
@@ -314,13 +346,23 @@ require_once __DIR__ . '/../includes/header.php';
                     </div>
                 </div>
 
-                <!-- Field 5: Catatan Pesanan Opsional -->
+                <!-- Field 7: Catatan Pesanan Opsional -->
                 <div class="form-group" style="margin-top: 0.5rem;">
                     <label class="form-label" for="inputCatatanPesanan">Catatan Pesanan (Opsional)</label>
                     <input type="text" id="inputCatatanPesanan" name="catatan" class="form-control" 
                            placeholder="Misal: Dibungkus, kuah dipisah, dsb."
                            aria-describedby="catatan-error">
-                    <small id="catatan-error" class="error-message"></small>
+                    <small id="catatan-error" class="error-message" role="alert"></small>
+                </div>
+
+                <!-- Field 8: Checkbox Konfirmasi Pesanan -->
+                <div class="form-group" style="margin-top: 1rem; margin-bottom: 0.5rem;">
+                    <label class="checkbox-container" for="inputKonfirmasiPesanan">
+                        <input type="checkbox" id="inputKonfirmasiPesanan" name="konfirmasi" 
+                               aria-describedby="konfirmasi-error" required>
+                        <span>Saya mengonfirmasi bahwa data pesanan dan rincian pembayaran sudah benar. <span style="color: var(--status-danger);">*</span></span>
+                    </label>
+                    <small id="konfirmasi-error" class="error-message" role="alert"></small>
                 </div>
             </div>
 
@@ -355,6 +397,10 @@ require_once __DIR__ . '/../includes/header.php';
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
                     <span style="color: var(--text-muted);">Nomor Pesanan:</span>
                     <strong id="resNomorPesanan">-</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
+                    <span style="color: var(--text-muted);">Nama Pemesan:</span>
+                    <strong id="resNamaPemesan">-</strong>
                 </div>
                 <div style="display: flex; justify-content: space-between; margin-bottom: 0.4rem;">
                     <span style="color: var(--text-muted);">Waktu:</span>
@@ -634,6 +680,14 @@ function openCheckoutModal() {
     document.getElementById('inputNominalCash').value = '';
     calculateKembalian();
 
+    // Reset input nama, kontak, konfirmasi saat modal dibuka
+    const namaInput = document.getElementById('inputNamaPemesan');
+    if (namaInput) namaInput.value = '';
+    const kontakInput = document.getElementById('inputKontakPemesan');
+    if (kontakInput) kontakInput.value = '';
+    const konfirmasiInput = document.getElementById('inputKonfirmasiPesanan');
+    if (konfirmasiInput) konfirmasiInput.checked = false;
+
     // Reset error tampilan lama saat membuka modal
     if (typeof renderErrors === 'function') {
         renderErrors({});
@@ -756,7 +810,9 @@ async function submitTransaction() {
         nominalDiterima = grandTotal;
     }
 
-    const catatan = document.getElementById('inputCatatanPesanan').value.trim();
+    const namaPemesan = document.getElementById('inputNamaPemesan') ? document.getElementById('inputNamaPemesan').value.trim() : '';
+    const kontakPemesan = document.getElementById('inputKontakPemesan') ? document.getElementById('inputKontakPemesan').value.trim() : '';
+    const catatan = document.getElementById('inputCatatanPesanan') ? document.getElementById('inputCatatanPesanan').value.trim() : '';
     const submitBtn = document.getElementById('btnSubmitPayment');
     submitBtn.disabled = true;
     submitBtn.innerText = 'Memproses Transaksi...';
@@ -764,6 +820,8 @@ async function submitTransaction() {
     const payload = {
         metode_pembayaran: currentPaymentMethod,
         nominal_diterima: nominalDiterima,
+        nama_pemesan: namaPemesan,
+        kontak_pemesan: kontakPemesan,
         catatan: catatan,
         items: cart.map(item => ({
             id_produk: item.id_produk,
@@ -787,6 +845,10 @@ async function submitTransaction() {
             // Isi data modal sukses
             const d = result.data;
             document.getElementById('resNomorPesanan').innerText = d.nomor_pesanan;
+            const resNamaEl = document.getElementById('resNamaPemesan');
+            if (resNamaEl) {
+                resNamaEl.innerText = d.nama_pemesan || namaPemesan || '-';
+            }
             document.getElementById('resTanggal').innerText = d.tanggal;
             document.getElementById('resMetode').innerText = d.metode_pembayaran;
             document.getElementById('resTotal').innerText = d.total_formatted;

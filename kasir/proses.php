@@ -34,7 +34,22 @@ if (!$payload || !isset($payload['items']) || !is_array($payload['items']) || em
 
 $metode = in_array($payload['metode_pembayaran'] ?? '', ['cash', 'qris']) ? $payload['metode_pembayaran'] : 'cash';
 $nominal_diterima = (float)($payload['nominal_diterima'] ?? 0);
-$catatan = trim($payload['catatan'] ?? '');
+$nama_pemesan = trim($payload['nama_pemesan'] ?? '');
+$kontak_pemesan = trim($payload['kontak_pemesan'] ?? '');
+$catatan_raw = trim($payload['catatan'] ?? '');
+
+$catatan_parts = [];
+if ($nama_pemesan !== '') {
+    $pemesan_str = "Pemesan: " . $nama_pemesan;
+    if ($kontak_pemesan !== '') {
+        $pemesan_str .= " (" . $kontak_pemesan . ")";
+    }
+    $catatan_parts[] = $pemesan_str;
+}
+if ($catatan_raw !== '') {
+    $catatan_parts[] = $catatan_raw;
+}
+$catatan = implode(' | ', $catatan_parts);
 $id_user = (int)$_SESSION['user_id'];
 
 // Mulai Database Transaction (ACID)
@@ -176,6 +191,7 @@ try {
         'data' => [
             'id_pesanan' => $id_pesanan,
             'nomor_pesanan' => $nomor_pesanan,
+            'nama_pemesan' => $nama_pemesan ?: 'Pelanggan Umum',
             'tanggal' => date('d/m/Y H:i'),
             'total' => $total_recalculated,
             'total_formatted' => format_rupiah($total_recalculated),

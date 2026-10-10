@@ -890,7 +890,7 @@ function selectPaymentMethod(method) {
     }
 }
 // ============================================================
-// PRAKTIKUM 6 - NOMOR 5
+// PRAKTIKUM A & B: CLIENT-SIDE ACCESSIBLE FORM & VALIDATION
 // readFormData, validate, renderErrors
 // ============================================================
 
@@ -900,57 +900,83 @@ function readFormData() {
     );
 
     const cashInput = document.getElementById("input-cash-received");
+    const nameInput = document.getElementById("inputNamaPemesan");
+    const contactInput = document.getElementById("inputKontakPemesan");
+    const dateInput = document.getElementById("inputTanggalTransaksi");
+    const confirmInput = document.getElementById("inputKonfirmasiPesanan");
     const totals = calculateCartTotals();
 
+    const customerName = STATE.selectedCustomer ? STATE.selectedCustomer.name : (nameInput ? nameInput.value.trim() : "");
+    const customerPhone = STATE.selectedCustomer ? STATE.selectedCustomer.phone : (contactInput ? contactInput.value.trim() : "");
+
     return {
-        cart: STATE.cart,
-        paymentMethod: selectedMethodInput
-            ? selectedMethodInput.value
-            : "",
+        cart: STATE.cart || [],
+        paymentMethod: selectedMethodInput ? selectedMethodInput.value : "",
         cashReceived: Number(cashInput?.value) || 0,
         grandTotal: totals.grandTotal,
-        customer: STATE.selectedCustomer
+        customer: STATE.selectedCustomer,
+        customerName: customerName,
+        customerPhone: customerPhone,
+        date: dateInput ? dateInput.value.trim() : new Date().toISOString().split("T")[0],
+        confirmed: confirmInput ? confirmInput.checked : true
     };
 }
 
 function validate(data) {
     const errors = {};
-    // 1. Keranjang tidak boleh kosong
+
+    // 1. Keranjang tidak boleh kosong (minimal 1 item)
     if (!data.cart || data.cart.length === 0) {
-        errors.cart = "Keranjang belanja masih kosong!";
+        errors.cart = "Keranjang belanja masih kosong! Silakan pilih minimal 1 produk.";
     }
-    // 2. Metode pembayaran harus valid
-    const validPaymentMethods = [
-        "Tunai",
-        "QRIS",
-    ];
+
+    // 2. Nama pemesan wajib diisi dan minimal 3 karakter
+    if (!data.customerName || data.customerName.trim() === "") {
+        errors.customer = "Nama pemesan wajib diisi.";
+    } else if (data.customerName.trim().length < 3) {
+        errors.customer = "Nama pemesan minimal 3 karakter.";
+    }
+
+    // 3. Validasi kontak pemesan jika diisi
+    if (data.customerPhone && data.customerPhone.trim() !== "") {
+        const cleanPhone = data.customerPhone.replace(/[\s\-\(\)\+]/g, "");
+        if (!/^[0-9]{9,15}$/.test(cleanPhone)) {
+            errors.contact = "Format nomor kontak tidak valid (contoh: 081234567890).";
+        }
+    }
+
+    // 4. Tanggal transaksi harus valid
+    if (!data.date || data.date === "" || isNaN(Date.parse(data.date))) {
+        errors.date = "Tanggal transaksi harus valid.";
+    }
+
+    // 5. Metode pembayaran harus valid (Tunai atau QRIS)
+    const validPaymentMethods = ["Tunai", "QRIS", "cash", "qris"];
     if (!validPaymentMethods.includes(data.paymentMethod)) {
-        errors.paymentMethod = "Metode pembayaran harus dipilih.";
+        errors.paymentMethod = "Metode pembayaran harus dipilih (Tunai atau QRIS).";
     }
-    // 3. Nominal tunai wajib diisi
-    if (data.paymentMethod === "Tunai" && data.cashReceived <= 0) {
-        errors.cashReceived = "Nominal uang diterima harus diisi.";
+
+    // 6. Nominal tunai wajib diisi dan tidak boleh kurang dari total
+    if (data.paymentMethod === "Tunai" || data.paymentMethod === "cash") {
+        if (data.cashReceived <= 0) {
+            errors.cashReceived = "Nominal uang diterima harus diisi untuk pembayaran Tunai.";
+        } else if (data.cashReceived < data.grandTotal) {
+            errors.cashReceived = `Uang yang diterima kurang ${formatRupiah(data.grandTotal - data.cashReceived)}.`;
+        }
     }
-    // 4. Nominal tunai tidak boleh kurang dari total
-    if (
-        data.paymentMethod === "Tunai" &&
-        data.cashReceived > 0 &&
-        data.cashReceived < data.grandTotal
-    ) {
-        errors.cashReceived =
-            `Uang yang diterima kurang ${formatRupiah(
-                data.grandTotal - data.cashReceived
-            )}.`;
+
+    // 7. Checkbox konfirmasi harus dicentang jika elemen ada
+    if (document.getElementById("inputKonfirmasiPesanan") && !data.confirmed) {
+        errors.confirmed = "Harap centang konfirmasi bahwa data pesanan sudah benar.";
     }
-    // 5. Jumlah setiap produk harus valid
+
+    // 8. Jumlah setiap item produk harus minimal 1
     if (data.cart && data.cart.length > 0) {
         const invalidItem = data.cart.find(
-            item =>
-                !Number.isInteger(Number(item.qty)) ||
-                Number(item.qty) < 1
+            item => !Number.isInteger(Number(item.qty)) || Number(item.qty) < 1
         );
         if (invalidItem) {
-            errors.qty = "Jumlah produk harus minimal 1.";
+            errors.qty = "Jumlah setiap produk harus minimal 1.";
         }
     }
 
@@ -963,7 +989,6 @@ function renderErrors(errors) {
     if (cashError) {
         cashError.textContent = errors.cashReceived || "";
     }
-    // Tandai input nominal jika error
     const cashInput = document.getElementById("input-cash-received");
     if (cashInput) {
         if (errors.cashReceived) {
@@ -974,19 +999,32 @@ function renderErrors(errors) {
             cashInput.setAttribute("aria-invalid", "false");
         }
     }
-    // Tampilkan error umum
-    if (errors.cart) {
-        showToast(errors.cart, "warning");
+
+    // Pesan error nama pemesan
+    const nameError = document.getElementById("nama-error") || document.getElementById("customerError");
+    if (nameError) {
+        nameError.textContent = errors.customer || "";
     }
-    if (errors.paymentMethod) {
-        showToast(errors.paymentMethod, "warning");
+    const nameInput = document.getElementById("inputNamaPemesan");
+    if (nameInput) {
+        if (errors.customer) {
+            nameInput.classList.add("is-invalid");
+            nameInput.setAttribute("aria-invalid", "true");
+        } else {
+            nameInput.classList.remove("is-invalid");
+            nameInput.setAttribute("aria-invalid", "false");
+        }
     }
-    if (errors.qty) {
-        showToast(errors.qty, "warning");
+
+    // Tampilkan notifikasi toast jika tersedia
+    if (typeof showToast === "function") {
+        if (errors.cart) showToast(errors.cart, "warning");
+        if (errors.customer) showToast(errors.customer, "warning");
+        if (errors.paymentMethod) showToast(errors.paymentMethod, "warning");
+        if (errors.cashReceived) showToast(errors.cashReceived, "error");
+        if (errors.confirmed) showToast(errors.confirmed, "warning");
     }
-    if (errors.cashReceived) {
-        showToast(errors.cashReceived, "error");
-    }
+
     return Object.keys(errors).length === 0;
 }
 
