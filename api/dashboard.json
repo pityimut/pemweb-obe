@@ -1,0 +1,140 @@
+{
+    "status": "success",
+    "message": "Data dashboard berhasil dimuat",
+    "timestamp": "2026-10-10 21:27:31",
+    "data": {
+        "ringkasan": {
+            "total_penjualan": 60000,
+            "penjualan_hari_ini": 0,
+            "total_transaksi": 2,
+            "transaksi_hari_ini": 0,
+            "total_produk": 8,
+            "total_stok": 597,
+            "produk_stok_menipis": 0,
+            "produk_habis": 0,
+            "total_kategori": 2
+        },
+        "kategori": [
+            {
+                "id_kategori": 1,
+                "nama_kategori": "Makanan",
+                "jumlah_produk": 4
+            },
+            {
+                "id_kategori": 2,
+                "nama_kategori": "Minuman",
+                "jumlah_produk": 4
+            }
+        ],
+        "produk": [
+            {
+                "id_produk": 3,
+                "nama_produk": "Bakso",
+                "id_kategori": 1,
+                "nama_kategori": "Makanan",
+                "harga": 20000,
+                "stok": 48,
+                "status_stok": "aman",
+                "opsi_suhu": "tidak_berlaku",
+                "gambar": "bakso.jpg"
+            },
+            {
+                "id_produk": 1,
+                "nama_produk": "Mie Ayam",
+                "id_kategori": 1,
+                "nama_kategori": "Makanan",
+                "harga": 20000,
+                "stok": 49,
+                "status_stok": "aman",
+                "opsi_suhu": "tidak_berlaku",
+                "gambar": "mie-ayam-biasa.jpg"
+            },
+            {
+                "id_produk": 2,
+                "nama_produk": "Mie Ayam Bakso",
+                "id_kategori": 1,
+                "nama_kategori": "Makanan",
+                "harga": 23000,
+                "stok": 50,
+                "status_stok": "aman",
+                "opsi_suhu": "tidak_berlaku",
+                "gambar": "mie-ayam-pentol.jpg"
+            },
+            {
+                "id_produk": 4,
+                "nama_produk": "Soto",
+                "id_kategori": 1,
+                "nama_kategori": "Makanan",
+                "harga": 22000,
+                "stok": 50,
+                "status_stok": "aman",
+                "opsi_suhu": "tidak_berlaku",
+                "gambar": "soto.jpg"
+            },
+            {
+                "id_produk": 8,
+                "nama_produk": "Air Es",
+                "id_kategori": 2,
+                "nama_kategori": "Minuman",
+                "harga": 2000,
+                "stok": 100,
+                "status_stok": "aman",
+                "opsi_suhu": "dingin",
+                "gambar": "air-es.jpg"
+            },
+            {
+                "id_produk": 6,
+                "nama_produk": "Es Jeruk",
+                "id_kategori": 2,
+                "nama_kategori": "Minuman",
+                "harga": 6000,
+                "stok": 100,
+                "status_stok": "aman",
+                "opsi_suhu": "panas_dingin",
+                "gambar": "jeruk.jpg"
+            },
+            {
+                "id_produk": 7,
+                "nama_produk": "Es Sirup",
+                "id_kategori": 2,
+                "nama_kategori": "Minuman",
+                "harga": 5000,
+                "stok": 100,
+                "status_stok": "aman",
+                "opsi_suhu": "panas_dingin",
+                "gambar": "sirup-susu.jpg"
+            },
+            {
+                "id_produk": 5,
+                "nama_produk": "Es Teh",
+                "id_kategori": 2,
+                "nama_kategori": "Minuman",
+                "harga": 5000,
+                "stok": 100,
+                "status_stok": "aman",
+                "opsi_suhu": "panas_dingin",
+                "gambar": "teh.jpg"
+            }
+        ],
+        "transaksi_terbaru": [
+            {
+                "id_pesanan": 2,
+                "nomor_pesanan": "TRX-20261009-001",
+                "tanggal": "2026-10-09 01:16:46",
+                "total": 20000,
+                "status": "selesai",
+                "nama_kasir": "Kasir Hanisa",
+                "metode_pembayaran": "cash"
+            },
+            {
+                "id_pesanan": 1,
+                "nomor_pesanan": "TRX-20261004-001",
+                "tanggal": "2026-10-04 17:48:40",
+                "total": 40000,
+                "status": "selesai",
+                "nama_kasir": "Kasir Hanisa",
+                "metode_pembayaran": "cash"
+            }
+        ]
+    }
+}

@@ -314,8 +314,40 @@ function switchPage(pageId) {
 
 /* ==========================================================================
    2. DASBOR (RINGKASAN, STATISTIK, ALERT STOK, SHORTCUTS)
+   PRAKTIKUM PERTEMUAN 7: Fetch data statistik dari endpoint API / JSON lokal
    ========================================================================== */
+export async function syncDashboardWithAPI() {
+    try {
+        const response = await fetch("api/dashboard.php", {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+        if (!response.ok) {
+            throw new Error(`Permintaan API gagal dengan status HTTP ${response.status}`);
+        }
+        const res = await response.json();
+        if (res.status === "success" && res.data) {
+            console.log("[OBE Pertemuan 7] Data dashboard berhasil disinkronkan dari API:", res.data);
+            return res.data;
+        }
+    } catch (err) {
+        console.warn("[OBE Pertemuan 7] Mencoba fallback ke JSON lokal:", err.message);
+        try {
+            const fallbackRes = await fetch("api/dashboard.json");
+            if (fallbackRes.ok) {
+                const fbData = await fallbackRes.json();
+                console.log("[OBE Pertemuan 7] Data berhasil dimuat dari JSON lokal:", fbData.data);
+                return fbData.data;
+            }
+        } catch (e) {
+            console.error("[OBE Pertemuan 7] Gagal memuat data API dan fallback JSON:", e);
+        }
+    }
+    return null;
+}
+
 function renderDashboard() {
+    syncDashboardWithAPI();
     const today = getTanggalHariIni();
 
     // 1. Filter transaksi hari ini
@@ -924,19 +956,16 @@ function readFormData() {
 
 function validate(data) {
     const errors = {};
-
     // 1. Keranjang tidak boleh kosong (minimal 1 item)
     if (!data.cart || data.cart.length === 0) {
         errors.cart = "Keranjang belanja masih kosong! Silakan pilih minimal 1 produk.";
     }
-
     // 2. Nama pemesan wajib diisi dan minimal 3 karakter
     if (!data.customerName || data.customerName.trim() === "") {
         errors.customer = "Nama pemesan wajib diisi.";
     } else if (data.customerName.trim().length < 3) {
         errors.customer = "Nama pemesan minimal 3 karakter.";
     }
-
     // 3. Validasi kontak pemesan jika diisi
     if (data.customerPhone && data.customerPhone.trim() !== "") {
         const cleanPhone = data.customerPhone.replace(/[\s\-\(\)\+]/g, "");
@@ -944,18 +973,15 @@ function validate(data) {
             errors.contact = "Format nomor kontak tidak valid (contoh: 081234567890).";
         }
     }
-
     // 4. Tanggal transaksi harus valid
     if (!data.date || data.date === "" || isNaN(Date.parse(data.date))) {
         errors.date = "Tanggal transaksi harus valid.";
     }
-
     // 5. Metode pembayaran harus valid (Tunai atau QRIS)
     const validPaymentMethods = ["Tunai", "QRIS", "cash", "qris"];
     if (!validPaymentMethods.includes(data.paymentMethod)) {
         errors.paymentMethod = "Metode pembayaran harus dipilih (Tunai atau QRIS).";
     }
-
     // 6. Nominal tunai wajib diisi dan tidak boleh kurang dari total
     if (data.paymentMethod === "Tunai" || data.paymentMethod === "cash") {
         if (data.cashReceived <= 0) {
@@ -964,12 +990,10 @@ function validate(data) {
             errors.cashReceived = `Uang yang diterima kurang ${formatRupiah(data.grandTotal - data.cashReceived)}.`;
         }
     }
-
     // 7. Checkbox konfirmasi harus dicentang jika elemen ada
     if (document.getElementById("inputKonfirmasiPesanan") && !data.confirmed) {
         errors.confirmed = "Harap centang konfirmasi bahwa data pesanan sudah benar.";
     }
-
     // 8. Jumlah setiap item produk harus minimal 1
     if (data.cart && data.cart.length > 0) {
         const invalidItem = data.cart.find(
@@ -979,11 +1003,31 @@ function validate(data) {
             errors.qty = "Jumlah setiap produk harus minimal 1.";
         }
     }
-
     return errors;
 }
 
 function renderErrors(errors) {
+
+    // Ringkasan kesalahan form (aksesibilitas)
+    const errorSummary = document.getElementById("form-errors");
+
+    if (errorSummary) {
+        const messages = Object.values(errors).filter(Boolean);
+
+        if (messages.length > 0) {
+            errorSummary.innerHTML = `
+                <strong>Terdapat ${messages.length} kesalahan pada form pembayaran:</strong>
+                <ul>
+                    ${messages.map(message => `<li>${message}</li>`).join("")}
+                </ul>
+            `;
+            errorSummary.hidden = false;
+        } else {
+            errorSummary.innerHTML = "";
+            errorSummary.hidden = true;
+        }
+    }
+
     // Pesan error nominal pembayaran
     const cashError = document.getElementById("nominalCashError");
     if (cashError) {
@@ -1023,6 +1067,15 @@ function renderErrors(errors) {
         if (errors.paymentMethod) showToast(errors.paymentMethod, "warning");
         if (errors.cashReceived) showToast(errors.cashReceived, "error");
         if (errors.confirmed) showToast(errors.confirmed, "warning");
+    }
+
+    // Fokuskan kursor ke kolom pertama yang mengalami kesalahan
+    const firstInvalidInput = document.querySelector(
+        '#formTransaksi [aria-invalid="true"]'
+    );
+
+    if (firstInvalidInput) {
+        firstInvalidInput.focus();
     }
 
     return Object.keys(errors).length === 0;
@@ -1968,26 +2021,26 @@ function initEventListeners() {
 
     // POS Category Tabs
     // Pulihkan kategori terakhir
-document.querySelectorAll(".cat-pill").forEach(pill => {
-    if (pill.dataset.category === STATE.activeCategory) {
-        pill.classList.add("active");
-    } else {
-        pill.classList.remove("active");
-    }
-});
+    document.querySelectorAll(".cat-pill").forEach(pill => {
+        if (pill.dataset.category === STATE.activeCategory) {
+            pill.classList.add("active");
+        } else {
+            pill.classList.remove("active");
+        }
+    });
     document.querySelectorAll(".cat-pill").forEach(pill => {
         pill.addEventListener("click", () => {
             document.querySelectorAll(".cat-pill").forEach(p => p.classList.remove("active"));
-                pill.classList.add("active");
+            pill.classList.add("active");
 
-                 STATE.activeCategory = pill.dataset.category;
+            STATE.activeCategory = pill.dataset.category;
 
-          // Simpan kategori terakhir
-        localStorage.setItem("hanisa_active_category", STATE.activeCategory);
+            // Simpan kategori terakhir
+            localStorage.setItem("hanisa_active_category", STATE.activeCategory);
 
-        renderPOSProducts();
+            renderPOSProducts();
+        });
     });
-});
 
     // Clear Cart
     document.getElementById("btn-clear-cart")?.addEventListener("click", clearCart);
@@ -2067,30 +2120,30 @@ document.querySelectorAll(".cat-pill").forEach(pill => {
     document.getElementById("btn-confirm-payment")?.addEventListener("click", handleConfirmPayment);
 
     // ============================================================
-// PRAKTIKUM 6 - NOMOR 5
-// Validasi sebelum proses pembayaran
-// ============================================================
+    // PRAKTIKUM 6 - NOMOR 5
+    // Validasi sebelum proses pembayaran
+    // ============================================================
 
-const confirmPaymentButton = document.getElementById(
-    "btn-confirm-payment"
-);
-
-if (confirmPaymentButton) {
-    confirmPaymentButton.addEventListener(
-        "click",
-        (e) => {
-            const formData = readFormData();
-            const errors = validate(formData);
-            const isValid = renderErrors(errors);
-
-            if (!isValid) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-            }
-        },
-        true
+    const confirmPaymentButton = document.getElementById(
+        "btn-confirm-payment"
     );
-}
+
+    if (confirmPaymentButton) {
+        confirmPaymentButton.addEventListener(
+            "click",
+            (e) => {
+                const formData = readFormData();
+                const errors = validate(formData);
+                const isValid = renderErrors(errors);
+
+                if (!isValid) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                }
+            },
+            true
+        );
+    }
 
     // Receipt Actions
     document.getElementById("btn-print-receipt")?.addEventListener("click", handlePrintReceipt);

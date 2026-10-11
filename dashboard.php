@@ -154,6 +154,165 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </div>
 
+<!-- ==============================================================
+     MINI DASHBOARD REAL-TIME BERBASIS API (OBE PERTEMUAN 7)
+     ============================================================== -->
+<section id="mini-dashboard-section" class="card mini-dashboard-card" aria-label="Mini Dashboard Real-Time" data-base-url="<?= BASE_URL ?>">
+    <div class="card-header" style="flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                <h3 class="card-title" style="display: flex; align-items: center; gap: 0.5rem;">
+                    <span>⚡</span> Mini Dashboard Real-Time Warung Hanisa
+                </h3>
+                <span id="apiStatusBadge" class="badge badge-info" style="font-size: 0.75rem;">
+                    📡 Menghubungkan API...
+                </span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+                Pemantauan data stok menu & ringkasan penjualan langsung dari endpoint API secara asinkron (fetch & async/await)
+            </p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" id="btnRefreshDashboard" class="btn btn-secondary btn-sm" title="Perbarui data dari server">
+                <span>🔄</span> <span>Perbarui Data</span>
+            </button>
+            <button type="button" id="btnSimulateError" class="btn btn-outline-danger btn-sm" title="Uji penanganan kegagalan API (Latihan 3)">
+                <span>⚠️</span> <span>Uji Error State</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- FILTER & PENCARIAN TOOLBAR -->
+    <div class="mini-dash-toolbar" id="miniDashToolbar">
+        <div class="mini-dash-search">
+            <span class="mini-dash-search-icon">🔍</span>
+            <label for="miniDashSearchInput" class="visually-hidden">Cari menu produk</label>
+            <input type="text" id="miniDashSearchInput" class="form-control" 
+                   placeholder="Cari menu makanan atau minuman..." autocomplete="off">
+        </div>
+
+        <div class="mini-dash-filters">
+            <label for="miniDashCategoryFilter" class="visually-hidden">Filter Kategori</label>
+            <select id="miniDashCategoryFilter" class="form-select" style="min-width: 150px;">
+                <option value="all">Semua Kategori</option>
+                <!-- Populated dinamis dari API -->
+            </select>
+
+            <label for="miniDashStockFilter" class="visually-hidden">Filter Stok</label>
+            <select id="miniDashStockFilter" class="form-select" style="min-width: 160px;">
+                <option value="all">Semua Status Stok</option>
+                <option value="aman">Stok Aman (&gt; 10)</option>
+                <option value="menipis">Stok Menipis (1 - 10)</option>
+                <option value="habis">Stok Habis (0)</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- 1. LOADING STATE -->
+    <div id="miniDashLoading" class="mini-dash-state mini-dash-loading" role="status" aria-live="polite">
+        <div class="spinner-custom"></div>
+        <p class="loading-text">Memuat data dashboard...</p>
+        <small style="color: var(--text-muted);">Mengambil data secara asynchronous melalui API fetch()...</small>
+    </div>
+
+    <!-- 2. ERROR STATE -->
+    <div id="miniDashError" class="mini-dash-state mini-dash-error hidden" role="alert" aria-live="assertive">
+        <div class="error-icon-circle">⚠️</div>
+        <h4 style="color: var(--status-danger); margin: 0.5rem 0 0.25rem;">Gagal Memuat Data Dashboard</h4>
+        <p id="miniDashErrorMessage" class="error-desc">Terjadi kesalahan saat menghubungi endpoint server.</p>
+        <div style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+            <button type="button" id="btnRetryDashboard" class="btn btn-primary btn-sm">
+                <span>🔄</span> Coba Lagi
+            </button>
+            <button type="button" id="btnResetEndpoint" class="btn btn-secondary btn-sm hidden">
+                <span>↩️</span> Pulihkan Endpoint Normal
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. DATA STATE (SUCCESS) -->
+    <div id="miniDashContent" class="mini-dash-content hidden">
+        <!-- 4 Kartu Ringkasan Realtime -->
+        <div class="metric-grid" style="margin-bottom: 1.25rem;">
+            <div class="metric-card">
+                <div class="metric-icon-wrap metric-icon-pemasukan">💵</div>
+                <div class="metric-body">
+                    <div class="metric-label">Total Omzet Penjualan</div>
+                    <div class="metric-value" id="apiTotalPenjualan">Rp 0</div>
+                    <div class="metric-sub" id="apiPenjualanHariIni">Hari ini: Rp 0</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon-wrap metric-icon-transaksi">🧾</div>
+                <div class="metric-body">
+                    <div class="metric-label">Total Transaksi</div>
+                    <div class="metric-value" id="apiTotalTransaksi">0</div>
+                    <div class="metric-sub" id="apiTransaksiHariIni">Hari ini: 0 transaksi</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon-wrap metric-icon-terlaris">🍱</div>
+                <div class="metric-body">
+                    <div class="metric-label">Produk & Total Stok</div>
+                    <div class="metric-value" id="apiTotalProduk">0 Menu</div>
+                    <div class="metric-sub" id="apiTotalStok">0 porsi stok tersedia</div>
+                </div>
+            </div>
+
+            <div class="metric-card">
+                <div class="metric-icon-wrap metric-icon-pengeluaran">⚠️</div>
+                <div class="metric-body">
+                    <div class="metric-label">Status Restock</div>
+                    <div class="metric-value" id="apiStatusRestock">0 Menu</div>
+                    <div class="metric-sub" id="apiDetailRestock">Semua stok aman</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabel Monitoring Stok Produk Realtime -->
+        <div class="table-responsive" style="border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+            <table class="table" style="margin-bottom: 0;">
+                <thead>
+                    <tr>
+                        <th style="width: 50px; text-align: center;">Foto</th>
+                        <th>Nama Menu</th>
+                        <th>Kategori</th>
+                        <th>Harga</th>
+                        <th style="text-align: center;">Sisa Stok</th>
+                        <th style="text-align: center;">Status Stok</th>
+                        <th>Opsi Sajian</th>
+                    </tr>
+                </thead>
+                <tbody id="apiProductTableBody">
+                    <!-- Injected via JavaScript fetch() -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Data Kosong / Filter Tidak Menemukan Hasil -->
+        <div id="miniDashEmpty" class="mini-dash-empty hidden">
+            <span style="font-size: 2rem;">🔍</span>
+            <p style="margin-top: 0.5rem; font-weight: 600; color: var(--text-dark);">
+                Tidak ada data menu yang sesuai dengan filter atau pencarian.
+            </p>
+            <small style="color: var(--text-muted);">Silakan ubah kata kunci pencarian atau reset filter kategori.</small>
+        </div>
+
+        <!-- Footer Info -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.85rem; font-size: 0.78rem; color: var(--text-muted); flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+                <span>Terakhir diperbarui: </span><strong id="apiLastUpdated">-</strong>
+            </div>
+            <div>
+                <span>Endpoint: </span><code id="apiEndpointUrl" style="background: var(--bg-main); padding: 2px 6px; border-radius: 4px;">/pemweb-obe/api/dashboard.php</code>
+            </div>
+        </div>
+    </div>
+</section>
+
 <?php if ($role === 'admin'): ?>
     <!-- ==========================================================
          VIEW KHUSUS ADMINISTRATOR

@@ -424,3 +424,358 @@ document.addEventListener('DOMContentLoaded', function () {
         setupRealtimeErrorClearing(formTransaksi);
     }
 });
+
+/* ==========================================================================
+   PRAKTIKUM & TUGAS OBE PERTEMUAN 7: MINI DASHBOARD BERBASIS API
+   Warung Makan Hanisa
+   Fitur:
+   1. Pengambilan data asinkron: fetch(), async/await, try/catch, response.ok
+   2. Status tampilan: Loading state, Error state, Success state, Empty state
+   3. Penanganan kegagalan dengan tombol "Coba Lagi" (Retry)
+   4. Tampilan kartu metrik penjualan & tabel monitoring stok produk
+   5. Pencarian realtime & filter kategori + filter status stok
+   6. Tombol pengujian kegagalan (Latihan 3 error simulation)
+   ========================================================================== */
+
+(function () {
+    let cachedDashboardData = null;
+    let isSimulateErrorActive = false;
+
+    function safeFormatRupiah(val) {
+        if (typeof formatRupiah === 'function') return formatRupiah(val);
+        return 'Rp' + new Intl.NumberFormat('id-ID').format(Math.round(val || 0));
+    }
+
+    function safeEscapeHtml(text) {
+        if (typeof escapeHtml === 'function') return escapeHtml(text);
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.innerText = text;
+        return div.innerHTML;
+    }
+
+    function initMiniDashboard() {
+        const section = document.getElementById('mini-dashboard-section');
+        if (!section) return;
+
+        const baseUrl = section.dataset.baseUrl || '/pemweb-obe/';
+        const defaultEndpoint = `${baseUrl}api/dashboard.php`;
+
+        const loadingEl = document.getElementById('miniDashLoading');
+        const errorEl = document.getElementById('miniDashError');
+        const contentEl = document.getElementById('miniDashContent');
+        const emptyEl = document.getElementById('miniDashEmpty');
+        const errorMessageEl = document.getElementById('miniDashErrorMessage');
+        const statusBadge = document.getElementById('apiStatusBadge');
+        const endpointDisplay = document.getElementById('apiEndpointUrl');
+        const lastUpdatedEl = document.getElementById('apiLastUpdated');
+
+        const searchInput = document.getElementById('miniDashSearchInput');
+        const categoryFilter = document.getElementById('miniDashCategoryFilter');
+        const stockFilter = document.getElementById('miniDashStockFilter');
+
+        const btnRefresh = document.getElementById('btnRefreshDashboard');
+        const btnRetry = document.getElementById('btnRetryDashboard');
+        const btnSimulateError = document.getElementById('btnSimulateError');
+        const btnResetEndpoint = document.getElementById('btnResetEndpoint');
+
+        /**
+         * Mengambil data dashboard dari API secara Asynchronous
+         * Menggunakan fetch(), async/await, try/catch, dan pemeriksaan response.ok
+         */
+        async function fetchDashboardData(urlToFetch) {
+            const url = urlToFetch || (isSimulateErrorActive ? `${defaultEndpoint}?simulate_error=1` : defaultEndpoint);
+
+            // 1. TAMPILKAN STATUS LOADING (Latihan 3)
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            if (errorEl) errorEl.classList.add('hidden');
+            if (contentEl) contentEl.classList.add('hidden');
+            if (emptyEl) emptyEl.classList.add('hidden');
+
+            if (statusBadge) {
+                statusBadge.className = 'badge badge-warning';
+                statusBadge.innerHTML = '⏳ Memuat data...';
+            }
+            if (endpointDisplay) {
+                endpointDisplay.textContent = url;
+            }
+
+            try {
+                // Latihan 2: Pemanggilan fetch() dengan async/await
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    },
+                    cache: 'no-cache'
+                });
+
+                // Latihan 2 & 3: Pemeriksaan response.ok
+                if (!response.ok) {
+                    const statusText = response.statusText || 'Kesalahan Server';
+                    throw new Error(`Permintaan HTTP gagal dengan status ${response.status} (${statusText})`);
+                }
+
+                // Parsing JSON dari endpoint
+                const result = await response.json();
+
+                if (!result || result.status !== 'success' || !result.data) {
+                    throw new Error(result?.message || 'Format respons JSON dari endpoint tidak valid.');
+                }
+
+                // Simpan cache data yang berhasil didapatkan
+                cachedDashboardData = result.data;
+
+                // 2. TAMPILKAN STATUS SUKSES (DATA STATE)
+                if (loadingEl) loadingEl.classList.add('hidden');
+                if (errorEl) errorEl.classList.add('hidden');
+                if (contentEl) contentEl.classList.remove('hidden');
+
+                if (statusBadge) {
+                    statusBadge.className = 'badge badge-success';
+                    statusBadge.innerHTML = '🟢 API Terhubung (200 OK)';
+                }
+
+                if (lastUpdatedEl) {
+                    const now = new Date();
+                    lastUpdatedEl.textContent = now.toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'short',
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    }) + ' WIB';
+                }
+
+                // Populasi dropdown kategori jika belum terisi
+                populateCategoryFilter(cachedDashboardData.kategori || []);
+
+                // Render kartu metrik & tabel
+                renderDashboardView();
+
+            } catch (error) {
+                // Latihan 3: Penanganan Kesalahan (Error State) melalui try/catch
+                console.error('[Mini Dashboard API Error]:', error);
+
+                if (loadingEl) loadingEl.classList.add('hidden');
+                if (contentEl) contentEl.classList.add('hidden');
+                if (errorEl) errorEl.classList.remove('hidden');
+
+                if (errorMessageEl) {
+                    errorMessageEl.textContent = error.message || 'Terjadi kesalahan jaringan atau server saat mengakses endpoint.';
+                }
+
+                if (statusBadge) {
+                    statusBadge.className = 'badge badge-danger';
+                    statusBadge.innerHTML = '🔴 Gagal Terhubung';
+                }
+
+                if (btnResetEndpoint) {
+                    btnResetEndpoint.classList.toggle('hidden', !isSimulateErrorActive);
+                }
+            }
+        }
+
+        /**
+         * Mengisi opsi kategori pada dropdown filter secara dinamis dari data API
+         */
+        function populateCategoryFilter(categories) {
+            if (!categoryFilter || categoryFilter.options.length > 1) return;
+
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat.nama_kategori;
+                opt.textContent = `${cat.nama_kategori} (${cat.jumlah_produk || 0})`;
+                categoryFilter.appendChild(opt);
+            });
+        }
+
+        /**
+         * Render kartu metrik dan tabel berdasarkan filter pencarian & kategori
+         */
+        function renderDashboardView() {
+            if (!cachedDashboardData) return;
+
+            const { ringkasan, produk } = cachedDashboardData;
+
+            // A. Update Kartu Metrik Ringkasan
+            const elTotalPenjualan = document.getElementById('apiTotalPenjualan');
+            const elPenjualanHariIni = document.getElementById('apiPenjualanHariIni');
+            const elTotalTransaksi = document.getElementById('apiTotalTransaksi');
+            const elTransaksiHariIni = document.getElementById('apiTransaksiHariIni');
+            const elTotalProduk = document.getElementById('apiTotalProduk');
+            const elTotalStok = document.getElementById('apiTotalStok');
+            const elStatusRestock = document.getElementById('apiStatusRestock');
+            const elDetailRestock = document.getElementById('apiDetailRestock');
+
+            if (elTotalPenjualan) elTotalPenjualan.textContent = safeFormatRupiah(ringkasan.total_penjualan || 0);
+            if (elPenjualanHariIni) elPenjualanHariIni.textContent = `Hari ini: ${safeFormatRupiah(ringkasan.penjualan_hari_ini || 0)}`;
+            if (elTotalTransaksi) elTotalTransaksi.textContent = `${ringkasan.total_transaksi || 0} Trx`;
+            if (elTransaksiHariIni) elTransaksiHariIni.textContent = `Hari ini: ${ringkasan.transaksi_hari_ini || 0} pesanan`;
+            if (elTotalProduk) elTotalProduk.textContent = `${ringkasan.total_produk || 0} Menu`;
+            if (elTotalStok) elTotalStok.textContent = `${ringkasan.total_stok || 0} porsi stok tersedia`;
+
+            const totalPerluRestock = (ringkasan.produk_stok_menipis || 0) + (ringkasan.produk_habis || 0);
+            if (elStatusRestock) elStatusRestock.textContent = `${totalPerluRestock} Menu`;
+            if (elDetailRestock) {
+                if (totalPerluRestock === 0) {
+                    elDetailRestock.textContent = 'Semua stok menu aman';
+                } else {
+                    elDetailRestock.textContent = `${ringkasan.produk_stok_menipis || 0} menipis, ${ringkasan.produk_habis || 0} habis`;
+                }
+            }
+
+            // B. Filter Produk Realtime
+            const searchQuery = (searchInput ? searchInput.value : '').toLowerCase().trim();
+            const selectedCategory = categoryFilter ? categoryFilter.value : 'all';
+            const selectedStock = stockFilter ? stockFilter.value : 'all';
+
+            const filteredProducts = (produk || []).filter(item => {
+                // Filter pencarian teks
+                const matchSearch = !searchQuery || 
+                    item.nama_produk.toLowerCase().includes(searchQuery) ||
+                    item.nama_kategori.toLowerCase().includes(searchQuery);
+
+                // Filter kategori
+                const matchCategory = (selectedCategory === 'all') || 
+                    (item.nama_kategori === selectedCategory);
+
+                // Filter status stok
+                let matchStock = true;
+                if (selectedStock === 'aman') {
+                    matchStock = item.stok > 10;
+                } else if (selectedStock === 'menipis') {
+                    matchStock = item.stok > 0 && item.stok <= 10;
+                } else if (selectedStock === 'habis') {
+                    matchStock = item.stok <= 0;
+                }
+
+                return matchSearch && matchCategory && matchStock;
+            });
+
+            // C. Render Baris Tabel
+            const tbody = document.getElementById('apiProductTableBody');
+            if (!tbody) return;
+
+            if (filteredProducts.length === 0) {
+                tbody.innerHTML = '';
+                if (emptyEl) emptyEl.classList.remove('hidden');
+            } else {
+                if (emptyEl) emptyEl.classList.add('hidden');
+
+                tbody.innerHTML = filteredProducts.map(p => {
+                    let badgeClass = 'badge-stock-aman';
+                    let badgeLabel = '✓ Aman';
+
+                    if (p.stok <= 0) {
+                        badgeClass = 'badge-stock-habis';
+                        badgeLabel = '✕ Habis';
+                    } else if (p.stok <= 10) {
+                        badgeClass = 'badge-stock-menipis';
+                        badgeLabel = '⚠️ Menipis';
+                    }
+
+                    const formatSuhu = (suhu) => {
+                        if (suhu === 'panas_dingin') return '🔥 Panas / ❄ Dingin';
+                        if (suhu === 'dingin') return '❄ Dingin';
+                        return 'Standard';
+                    };
+
+                    const photoUrl = p.gambar 
+                        ? `${baseUrl}assets/uploads/produk/${p.gambar}` 
+                        : `${baseUrl}images/default.jpg`;
+                    const fallbackUrl = `${baseUrl}images/${p.gambar || 'default.jpg'}`;
+
+                    return `
+                        <tr>
+                            <td style="text-align: center;">
+                                <img src="${photoUrl}" 
+                                     alt="${safeEscapeHtml(p.nama_produk)}" 
+                                     class="product-thumb-sm" 
+                                     onerror="this.onerror=null; this.src='${fallbackUrl}';">
+                            </td>
+                            <td>
+                                <strong>${safeEscapeHtml(p.nama_produk)}</strong>
+                            </td>
+                            <td>
+                                <span class="badge badge-info" style="font-size: 0.75rem;">
+                                    ${safeEscapeHtml(p.nama_kategori)}
+                                </span>
+                            </td>
+                            <td>
+                                <strong style="color: var(--accent-orange); font-size: 0.9rem;">
+                                    ${safeFormatRupiah(p.harga)}
+                                </strong>
+                            </td>
+                            <td style="text-align: center; font-weight: 700;">
+                                ${p.stok} porsi
+                            </td>
+                            <td style="text-align: center;">
+                                <span class="badge ${badgeClass}" style="font-size: 0.75rem;">
+                                    ${badgeLabel}
+                                </span>
+                            </td>
+                            <td style="color: var(--text-muted); font-size: 0.82rem;">
+                                ${formatSuhu(p.opsi_suhu)}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        }
+
+        // D. Pasang Event Listeners
+        if (searchInput) {
+            searchInput.addEventListener('input', renderDashboardView);
+        }
+        if (categoryFilter) {
+            categoryFilter.addEventListener('change', renderDashboardView);
+        }
+        if (stockFilter) {
+            stockFilter.addEventListener('change', renderDashboardView);
+        }
+
+        // Tombol Perbarui Data
+        if (btnRefresh) {
+            btnRefresh.addEventListener('click', () => {
+                isSimulateErrorActive = false;
+                fetchDashboardData();
+            });
+        }
+
+        // Tombol Coba Lagi (Retry saat terjadi Error)
+        if (btnRetry) {
+            btnRetry.addEventListener('click', () => {
+                fetchDashboardData();
+            });
+        }
+
+        // Tombol Pengujian Error State (Latihan 3)
+        if (btnSimulateError) {
+            btnSimulateError.addEventListener('click', () => {
+                isSimulateErrorActive = true;
+                fetchDashboardData();
+            });
+        }
+
+        // Tombol Pulihkan Endpoint Normal setelah simulasi error
+        if (btnResetEndpoint) {
+            btnResetEndpoint.addEventListener('click', () => {
+                isSimulateErrorActive = false;
+                fetchDashboardData();
+            });
+        }
+
+        // Ambil data pertama kali saat halaman dimuat
+        fetchDashboardData();
+    }
+
+    // Jalankan inisialisasi Mini Dashboard saat DOM siap
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMiniDashboard);
+    } else {
+        initMiniDashboard();
+    }
+})();
+
