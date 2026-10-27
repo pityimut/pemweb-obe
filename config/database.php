@@ -6,10 +6,41 @@
 
 date_default_timezone_set('Asia/Jakarta');
 
-$db_host = 'localhost';
-$db_name = 'warung_hanisa';
-$db_user = 'root';
-$db_pass = '';
+// Helper pemuatan file environment (.env) lokal secara aman tanpa dependency eksternal
+if (!function_exists('load_env_file')) {
+    function load_env_file($filePath) {
+        if (!file_exists($filePath) || !is_readable($filePath)) {
+            return;
+        }
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ($line === '' || strpos($line, '#') === 0) {
+                continue;
+            }
+            if (strpos($line, '=') !== false) {
+                list($key, $value) = explode('=', $line, 2);
+                $key = trim($key);
+                $value = trim($value);
+                // Bersihkan tanda kutip pembungkus jika ada
+                if (strlen($value) >= 2 && (($value[0] === '"' && substr($value, -1) === '"') || ($value[0] === "'" && substr($value, -1) === "'"))) {
+                    $value = substr($value, 1, -1);
+                }
+                if (!array_key_exists($key, $_SERVER) && !array_key_exists($key, $_ENV)) {
+                    putenv("{$key}={$value}");
+                    $_ENV[$key] = $value;
+                    $_SERVER[$key] = $value;
+                }
+            }
+        }
+    }
+}
+load_env_file(__DIR__ . '/../.env');
+
+$db_host = getenv('DB_HOST') ?: ($_ENV['DB_HOST'] ?? 'localhost');
+$db_name = getenv('DB_NAME') ?: ($_ENV['DB_NAME'] ?? 'warung_hanisa');
+$db_user = getenv('DB_USER') ?: ($_ENV['DB_USER'] ?? 'root');
+$db_pass = getenv('DB_PASS') !== false ? getenv('DB_PASS') : ($_ENV['DB_PASS'] ?? '');
 
 try {
     $pdo = new PDO("mysql:host={$db_host};dbname={$db_name};charset=utf8mb4", $db_user, $db_pass, [

@@ -131,3 +131,5 @@ export const DEFAULT_CUSTOMERS = [
         notes: "Suka bakso pedas kuah banyak"
     }
 ];
+
+

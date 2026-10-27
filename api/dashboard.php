@@ -15,6 +15,16 @@ header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    header('Allow: GET');
+    http_response_code(405);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Metode HTTP tidak diizinkan. Hanya metode GET yang diperbolehkan.'
+    ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    exit;
+}
+
 // Dukungan pengujian: Skenario simulasi kegagalan request (Latihan 3)
 if (isset($_GET['simulate_error']) && $_GET['simulate_error'] === '1') {
     http_response_code(500);

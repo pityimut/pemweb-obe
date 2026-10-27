@@ -265,3 +265,291 @@ Mini Dashboard pada sistem Warung Hanisa digunakan untuk menampilkan ringkasan p
 **Cara menjalankan:** Aktifkan Apache dan MySQL melalui Laragon, kemudian buka `http://localhost/pemweb-obe/dashboard.php` pada browser.
 
 **Pengujian:** Periksa tampilan data dashboard, fitur pencarian dan filter, kondisi loading, serta penanganan error. Dokumentasikan hasil pengujian menggunakan screenshot halaman dan Console atau Network pada Developer Tools.
+
+Pada pengerjaan OBE Pertemuan 7, saya mengembangkan fitur Mini Dashboard Berbasis API pada sistem kasir Warung Hanisa. Fitur ini digunakan untuk menampilkan ringkasan omzet penjualan, jumlah transaksi, informasi produk, dan kondisi stok menu. Data diambil menggunakan Fetch API dengan pendekatan asynchronous melalui async/await.
+
+Saya mempelajari penggunaan fetch(), pemeriksaan status respons HTTP, pengolahan data JSON, serta penanganan kesalahan menggunakan try/catch. Saya juga memahami pentingnya menampilkan kondisi loading dan error agar pengguna mengetahui status pemuatan data. Selain itu, fitur pencarian dan filter membantu pengguna menemukan produk berdasarkan kriteria tertentu.
+
+Melalui pengujian menggunakan browser dan tab Network pada Developer Tools, saya dapat memeriksa permintaan data serta status respons endpoint. Pengerjaan ini membantu saya memahami hubungan antara API, JavaScript, dan tampilan antarmuka pada aplikasi web.
+
+---
+
+## 🚀 Tugas OBE 9: Back-End PHP dan REST API (Warung Makan Hanisa)
+
+### 1. Nama dan Tujuan Proyek
+* **Nama Proyek:** Sistem Informasi Manajemen Penjualan, Kasir, dan REST API Warung Makan Hanisa
+* **Tujuan Proyek:** Mengembangkan arsitektur backend berbasis PHP dan REST API yang terstruktur, aman, dan konsisten untuk mendukung sistem penjualan kasir UMKM Warung Makan Hanisa. API ini menyediakan endpoint pemeriksaan kesehatan server (`health.php`), manajemen data alat (`alats.php`), direktori endpoint (`index.php`), dan metrik dashboard (`dashboard.php`).
+
+### 2. Struktur File Backend dan Endpoint
+```
+pemweb-obe/
+├── api/
+│   ├── index.php         # Endpoint direktori & daftar rute API (GET -> 200, Method lain -> 405)
+│   ├── health.php        # Endpoint pemeriksaan kesehatan sistem (GET -> 200 {"status":"ok"}, Method lain -> 405)
+│   ├── alats.php         # Endpoint sumber daya data alat (GET -> 200, POST -> 201/400/415/422, Method lain -> 405)
+│   ├── alat.php          # Alias rute kompatibilitas singular ke alats.php
+│   ├── dashboard.php     # Endpoint metrik dashboard kasir terintegrasi DB (GET -> 200/500, Method lain -> 405)
+│   └── dashboard.json    # Data cadangan/mock lokal dashboard
+├── config/
+│   └── database.php      # Koneksi PDO MySQL & parser environment variabel (.env)
+├── .env.example          # Template konfigurasi environment yang aman untuk dilacak Git
+├── .gitignore            # Aturan pengabaian file sensitif (.env, vendor/, composer.phar)
+├── composer.json         # Konfigurasi metadata proyek Composer
+└── composer.lock         # File pengunci dependensi Composer
+```
+
+### 3. Persyaratan Versi PHP & Cara Memeriksa
+* **Persyaratan Tugas:** PHP 8.4.27.
+* **PHP CLI:** PHP 8.4.27 telah dipasang di `D:\laragon\bin\php\php-8.4.27`. Periksa versi CLI secara langsung di PowerShell:
+  ```powershell
+  & "D:\laragon\bin\php\php-8.4.27\php.exe" -v
+  ```
+  Perintah `php -v` hanya menunjukkan versi PHP yang ditemukan melalui `PATH`, yang mungkin berbeda dari versi pada path di atas.
+* **PHP Apache:** Versi PHP CLI dan Apache dapat berbeda, sehingga keduanya perlu diperiksa secara terpisah. Untuk mengatur versi di Laragon 5, pilih **Menu > PHP > Version > php-8.4.27**, lalu restart Apache. Untuk memeriksa PHP yang benar-benar digunakan Apache, buat sementara file PHP di folder proyek yang berisi `<?php phpinfo();`, buka file tersebut melalui `http://localhost/pemweb-obe/`, lalu periksa nilai **PHP Version**. Hapus file pemeriksaan setelah selesai dan jangan membiarkan halaman `phpinfo()` dapat diakses publik. Pemilihan versi dari menu Laragon saja belum membuktikan versi aktif Apache.
+
+#### Cara Menjalankan Aplikasi dengan Laragon 5
+
+1. Pastikan Laragon 5 terpasang dan folder proyek berada di `D:\laragon\www\pemweb-obe`.
+2. Buka Laragon, lalu pilih **Start All** atau jalankan **Apache** melalui kontrol Laragon. Pastikan Apache aktif sebelum membuka aplikasi.
+3. Aktifkan **MySQL** jika fitur yang digunakan memerlukan database. Aplikasi utama memuat konfigurasi koneksi database, sehingga MySQL dan database proyek perlu tersedia untuk membuka alur aplikasi utama. Endpoint yang tidak menggunakan database, seperti health check, tidak memerlukan MySQL.
+4. Buka `http://localhost/pemweb-obe/` di browser.
+5. Jika aplikasi tidak dapat dibuka, periksa bahwa folder tersebut berisi file proyek seperti `index.php`, status Apache di Laragon, URL dan port yang digunakan, serta log Apache dari menu Laragon. Jika muncul pesan kegagalan koneksi database, periksa status MySQL, keberadaan database, dan nilai koneksi pada `.env`. Periksa juga versi PHP Apache melalui langkah di atas; versi PHP CLI yang benar tidak otomatis berarti Apache menggunakan versi yang sama.
+
+### 4. Manajemen Dependensi & Penggunaan Composer
+* Proyek menggunakan fungsi PHP dan ekstensi yang tersedia di lingkungan PHP, tanpa package pihak ketiga yang terdaftar saat ini. `composer.json` berisi metadata proyek dan `composer.lock` tidak mencantumkan package atau package development.
+* Jika perintah `composer` belum tersedia di `PATH`, jalankan `composer.phar` melalui PHP CLI 8.4.27 dari root proyek:
+  ```powershell
+  & "D:\laragon\bin\php\php-8.4.27\php.exe" .\composer.phar --version
+  & "D:\laragon\bin\php\php-8.4.27\php.exe" .\composer.phar validate
+  & "D:\laragon\bin\php\php-8.4.27\php.exe" .\composer.phar install
+  ```
+  Perintah `validate` memeriksa metadata Composer; `install` memasang dependency yang tercantum pada manifest dan lock file. Karena saat ini tidak ada package terdaftar, tidak perlu menambahkan dependency hanya untuk menjalankan aplikasi.
+* **Keamanan Repositori:** Direktori `vendor/`, file biner `composer.phar`, serta `composer-setup.php` telah dimasukkan ke dalam `.gitignore` sehingga tidak akan diikutsertakan ke dalam repository Git.
+
+### 5. Konfigurasi Environment (.env dan .env.example)
+
+File `.env` menyimpan konfigurasi lokal aplikasi, seperti pengaturan koneksi database. File `.env.example` adalah templat untuk membuat `.env`; templat ini boleh disertakan di repositori dan harus tetap bebas dari password maupun rahasia asli. Buat `.env` dari direktori root proyek menggunakan PowerShell:
+```powershell
+Copy-Item .env.example .env
+```
+
+Berikut isi variabel yang saat ini tersedia pada `.env.example`:
+```ini
+APP_NAME="Warung Makan Hanisa"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost/pemweb-obe
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_NAME=warung_hanisa
+DB_USER=root
+DB_PASS=
+```
+
+Untuk konfigurasi koneksi database, `config/database.php` membaca `DB_HOST`, `DB_NAME`, `DB_USER`, dan `DB_PASS`. Nilai fallback jika variabel terkait tidak tersedia adalah `localhost`, `warung_hanisa`, `root`, dan string kosong. Variabel `APP_NAME`, `APP_ENV`, `APP_DEBUG`, `APP_URL`, `DB_CONNECTION`, dan `DB_PORT` ada pada templat, tetapi tidak dibaca oleh konfigurasi koneksi database tersebut. Sesuaikan nilai lokal yang relevan; jangan memasukkan kredensial asli ke `.env.example`.
+
+Jangan unggah `.env` ke Git karena dapat berisi konfigurasi lokal atau rahasia. Berdasarkan `.gitignore`, `.env` dan pola `.env.*` diabaikan, sementara pengecualian `!.env.example` memungkinkan templat tetap disertakan di repositori. Periksa aturan pengabaian `.env` dengan:
+```powershell
+git check-ignore -v .env
+```
+Jika cocok dengan aturan, perintah menampilkan file `.gitignore` dan baris yang mengabaikan `.env`.
+
+`config/database.php` memuat `.env` secara langsung tanpa dependency eksternal.
+
+### 6. Dokumentasi Spesifikasi Endpoint REST API
+
+Semua endpoint mengirim respons JSON. `api/index.php`, `api/health.php`, dan `api/alats.php` mengatur header `Content-Type: application/json; charset=utf-8`; `api/dashboard.php` mengatur `application/json; charset=UTF-8` (perbedaan kapitalisasi nilai charset tidak mengubah encoding).
+
+| No | Endpoint | Metode HTTP | Request | Status yang ditangani kode | Fungsi |
+| :---: | :--- | :---: | :--- | :--- | :--- |
+| **1** | `/api/index.php` | `GET` | Tanpa body | `200 OK`; metode lain `405 Method Not Allowed` (`Allow: GET`) | Menampilkan status direktori dan daftar endpoint API. |
+| **2** | `/api/health.php` | `GET` | Tanpa body | `200 OK`; metode lain `405 Method Not Allowed` (`Allow: GET`) | Memeriksa status API dan mengembalikan `{"status":"ok"}`. |
+| **3** | `/api/alats.php` | `GET` | Tanpa body | `200 OK`; metode selain `GET`/`POST` `405 Method Not Allowed` (`Allow: GET, POST`) | Mengembalikan daftar data contoh alat. |
+| **4** | `/api/alats.php` | `POST` | `Content-Type: application/json`; body JSON object | `201 Created`; kesalahan format/body `400 Bad Request`; tipe konten selain JSON `415 Unsupported Media Type`; validasi field gagal `422 Unprocessable Entity`; metode lain `405 Method Not Allowed` (`Allow: GET, POST`) | Memeriksa dan menerima data alat. Implementasi saat ini mengembalikan data yang diterima; endpoint ini belum menyimpannya ke database. |
+| **5** | `/api/alat.php` | `GET`, `POST` | Sama dengan `/api/alats.php` | Meneruskan ke `/api/alats.php`, sehingga status dan validasinya sama | Alias kompatibilitas singular. |
+| **6** | `/api/dashboard.php` | `GET` | Tanpa body; parameter query opsional | `200 OK`; metode lain `405 Method Not Allowed` (`Allow: GET`); kegagalan server/database atau `simulate_error=1` `500 Internal Server Error` | Mengambil data agregat dashboard dari database. |
+
+`/api/index.php` mencantumkan endpoint indeks, health, alats, dan dashboard. `/api/alat.php` tersedia sebagai alias di source, tetapi tidak dicantumkan oleh indeks API.
+
+#### Validasi `POST /api/alats.php`
+
+* Header media type harus `application/json` (parameter seperti `charset=utf-8` diperbolehkan).
+* Body harus JSON valid berbentuk object. Body kosong, sintaks JSON rusak, atau root selain object ditolak dengan `400`.
+* `nama` wajib ada, bukan `null`, berupa string, tidak boleh kosong setelah trim, dan maksimal 100 karakter setelah trim.
+* `jumlah` wajib ada, bukan `null`, berupa integer JSON (bukan string atau desimal), dan tidak boleh negatif.
+* Data valid menghasilkan `201`; kegagalan validasi field menghasilkan `422` dan daftar alasan di properti `errors`.
+
+---
+
+### 7. Panduan Pengujian Thunder Client / Browser & Contoh Request/Response
+
+#### Cara menjalankan pengujian
+
+1. Pastikan Laragon dan Apache berjalan, lalu gunakan base URL `http://localhost/pemweb-obe`.
+2. Di **Thunder Client**, buat request baru, pilih metode dan URL sesuai skenario di bawah. Untuk `POST`, pilih body JSON atau `Raw` dengan format JSON dan atur `Content-Type: application/json`.
+3. Kirim request dan periksa status HTTP, body JSON, serta header `Content-Type` pada hasil respons.
+4. Di browser, buka URL endpoint `GET` untuk melihat respons langsung. Untuk memeriksa request yang dibuat halaman web, buka Developer Tools (`F12`) → **Network**, muat ulang halaman, pilih request API, lalu periksa **Headers**, **Status Code**, dan **Response**. Untuk mengirim `POST` atau `DELETE`, gunakan Thunder Client; tab Network dipakai untuk mengamati request yang berasal dari browser.
+
+#### A. Endpoint `api/health.php` (Latihan 1)
+* **Skenario 1.1: Request GET (Normal)**
+  * **Method:** `GET` | **URL:** `http://localhost/pemweb-obe/api/health.php`
+  * **Status:** `200 OK` | **Content-Type:** `application/json; charset=utf-8`
+  * **Response Body:**
+    ```json
+    {"status":"ok"}
+    ```
+* **Skenario 1.2: Method Selain GET (POST / DELETE)**
+  * **Method:** `POST` | **URL:** `http://localhost/pemweb-obe/api/health.php`
+  * **Status yang diharapkan dari kode:** `405 Method Not Allowed` | **Header:** `Allow: GET`. Hasil pengujian skenario ini tidak termasuk hasil uji yang tersedia.
+  * **Response Body:**
+    ```json
+    {
+        "status": "error",
+        "message": "Metode HTTP tidak diizinkan. Hanya metode GET yang diperbolehkan."
+    }
+    ```
+
+#### B. Endpoint `api/alats.php` (Latihan 2 & 3)
+* **Skenario 2.1: Request GET (Daftar Alat)**
+  * **Method:** `GET` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Status:** `200 OK` | **Content-Type:** `application/json; charset=utf-8`
+  * **Response Body:**
+    ```json
+    {
+        "data": [
+            { "id": 1, "nama": "Router", "jumlah": 4 },
+            { "id": 2, "nama": "Multimeter", "jumlah": 6 }
+        ]
+    }
+    ```
+
+* **Skenario 2.2: POST Valid Standar (Nama ≤ 100 karakter)**
+  * **Method:** `POST` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Headers:** `Content-Type: application/json`
+  * **Body (JSON):**
+    ```json
+    {
+        "nama": "Access Point Ubiquiti",
+        "jumlah": 3
+    }
+    ```
+  * **Status:** `201 Created`
+  * **Catatan:** Respons menyatakan data diterima. Implementasi belum melakukan penyimpanan permanen.
+  * **Response Body:**
+    ```json
+    {
+        "status": "success",
+        "message": "Data diterima",
+        "data": {
+            "nama": "Access Point Ubiquiti",
+            "jumlah": 3
+        }
+    }
+    ```
+
+* **Skenario 2.3: POST Batas Valid (Nama Tepat 100 Karakter)**
+  * **Method:** `POST` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Headers:** `Content-Type: application/json`
+  * **Body (JSON):**
+    ```json
+    {
+        "nama": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "jumlah": 5
+    }
+    ```
+  * **Status yang diharapkan dari validasi kode:** `201 Created` jika field lain juga valid. Hasil pengujian untuk kasus batas tepat 100 karakter tidak termasuk hasil uji yang tersedia.
+
+* **Skenario 2.4: POST Melebihi Batas (Nama > 100 Karakter / 101 Karakter)**
+  * **Method:** `POST` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Headers:** `Content-Type: application/json`
+  * **Body (JSON):**
+    ```json
+    {
+        "nama": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "jumlah": 5
+    }
+    ```
+  * **Status:** `422 Unprocessable Entity`
+  * **Response Body:**
+    ```json
+    {
+        "status": "error",
+        "message": "Validasi gagal",
+        "errors": [
+            "Field nama tidak boleh lebih dari 100 karakter (maksimal 100 karakter)."
+        ]
+    }
+    ```
+
+* **Skenario 2.5: POST Tanpa Header Content-Type JSON**
+  * **Method:** `POST` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Headers:** `Content-Type: text/plain` (atau tanpa header)
+  * **Status yang diharapkan dari kode:** `415 Unsupported Media Type`. Hasil pengujian untuk skenario ini tidak termasuk hasil uji yang tersedia.
+  * **Response Body:**
+    ```json
+    {
+        "status": "error",
+        "message": "Content-Type harus application/json."
+    }
+    ```
+
+* **Skenario 2.6: POST Format JSON Rusak**
+  * **Method:** `POST` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Headers:** `Content-Type: application/json`
+  * **Body:** `{nama: rusak`
+  * **Status:** `400 Bad Request`
+  * **Response Body:**
+    ```json
+    {
+        "status": "error",
+        "message": "Format JSON tidak valid atau rusak"
+    }
+    ```
+
+* **Skenario 2.7: Request DELETE (Latihan 3 — Penolakan Metode Tidak Didukung)**
+  * **Method:** `DELETE` | **URL:** `http://localhost/pemweb-obe/api/alats.php`
+  * **Status:** `405 Method Not Allowed` | **Header:** `Allow: GET, POST`, `Content-Type: application/json; charset=utf-8`
+  * **Response Body:**
+    ```json
+    {
+        "status": "error",
+        "message": "Metode HTTP tidak diizinkan. Hanya metode GET dan POST yang diperbolehkan."
+    }
+    ```
+
+#### Hasil pengujian yang tersedia
+
+Hasil berikut adalah pengujian yang telah tersedia; hasil tersebut tidak menyatakan skenario lain sudah dijalankan:
+
+| Request | Hasil |
+| :--- | :--- |
+| `GET /api/health.php` | `200 OK` |
+| `GET /api/alats.php` | `200 OK` |
+| `POST /api/alats.php` dengan data valid | `201 Created` |
+| `POST /api/alats.php` dengan JSON rusak | `400 Bad Request` |
+| `POST /api/alats.php` dengan `nama` lebih dari 100 karakter | `422 Unprocessable Entity` |
+| `DELETE /api/alats.php` | `405 Method Not Allowed` |
+| Header respons endpoint API yang diuji | `Content-Type: application/json; charset=utf-8` |
+
+Untuk pengujian data valid, gunakan contoh body pada Skenario 2.2. Untuk JSON rusak, gunakan body `{nama: rusak` pada Skenario 2.6. Untuk validasi panjang nama, kirim string `nama` dengan lebih dari 100 karakter dan `jumlah` integer nonnegatif. Bentuk lengkap respons error ditentukan oleh source code dan ditampilkan pada skenario terkait; jangan menyimpulkan hasil pengujian dari skenario yang belum dijalankan.
+
+---
+
+### 8. Rekomendasi Skenario Screenshot Laporan Tugas OBE 9
+
+Tabel berikut mempertahankan dokumentasi screenshot sebagai rekomendasi pengumpulan bukti, bukan pernyataan bahwa semua skenario telah diuji. Status yang tersedia dirangkum pada tabel hasil pengujian di atas; ambil screenshot tambahan hanya setelah skenario terkait benar-benar dijalankan.
+
+| No | Skenario Pengujian / Screenshot | Deskripsi & Caption yang Direkomendasikan |
+| :---: | :--- | :--- |
+| **1** | **GET `api/health.php` (Browser / Thunder Client)** | Bukti hasil uji yang tersedia: respons `{"status":"ok"}`, status HTTP `200 OK`, dan header `application/json; charset=utf-8`. |
+| **2** | **POST `api/health.php` (Method selain GET)** | Jika diuji, screenshot respons kode `405 Method Not Allowed` dengan header `Allow: GET`; hasilnya belum termasuk daftar pengujian tersedia. |
+| **3** | **GET `api/alats.php` (Daftar Alat)** | Bukti hasil uji yang tersedia: respons daftar data alat dalam format JSON dengan status `200 OK`. |
+| **4** | **POST `api/alats.php` Valid (Nama ≤ 100 char)** | Bukti hasil uji yang tersedia: request data valid menghasilkan status `201 Created`. |
+| **5** | **POST `api/alats.php` Batas (Nama Tepat 100 char)** | Jika diuji, dokumentasikan hasil batas panjang; kode menerima nama hingga 100 karakter, tetapi hasil uji kasus tepat 100 karakter belum tersedia. |
+| **6** | **POST `api/alats.php` Gagal (Nama > 100 char)** | Bukti hasil uji yang tersedia: validasi nama lebih dari 100 karakter menghasilkan `422 Unprocessable Entity`. |
+| **7** | **POST `api/alats.php` Salah Content-Type** | Jika diuji, kode mengembalikan `415 Unsupported Media Type` untuk Content-Type selain JSON; hasil uji ini belum tersedia. |
+| **8** | **POST `api/alats.php` JSON Rusak** | Bukti hasil uji yang tersedia: body JSON rusak menghasilkan `400 Bad Request`. |
+| **9** | **DELETE `api/alats.php` (Latihan 3)** | Bukti hasil uji yang tersedia: method `DELETE` menghasilkan `405 Method Not Allowed` dengan header `Allow: GET, POST`. |
+| **10** | **Validasi Composer & Git Status** | Screenshot terminal saat menjalankan `composer validate` dan `git status`; dokumentasikan output aktual tanpa menyatakan lolos jika belum diverifikasi. |
